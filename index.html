@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <script src="js/pt-cover.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CAMELL | Work · Celebrate · Connect</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="css/index.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.js" integrity="sha384-yifgV8iFWyp5cgu+V1G1rtlEHpEErPlL5fTrkUELIsWq0CIVDON2WP/NlXVJT3vO" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+<div id="page-transition-overlay"><div class="pt-logo-clip"><span class="pt-logo">Camell</span></div></div>
+
+<!-- NAVBAR -->
+<nav id="navbar" class="cream-hero">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo_camel.png" alt="Camell" class="nav-logo-img logo-lg">
+    <span class="nav-logo-text">CAMELL</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="menu.html">Menu</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html">Kontak</a></li>
+  </ul>
+  <a href="contact.html#contact-form-section" class="nav-cta">Reservasi</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-blob b1"></div>
+  <div class="hero-blob b2"></div>
+  <div class="hero-blob b3"></div>
+  <div class="hero-inner">
+    <div>
+      <h1 class="hero-headline">Your space to<br><em>work, celebrate,</em><br>and connect.</h1>
+      <p class="hero-sub">Cafe aesthetic bernuansa modern dengan kopi berkualitas, pastry freshly baked, dan suasana instagramable di tengah kota.</p>
+      <div class="hero-actions">
+        <a href="menu.html" class="btn-primary">Lihat Menu</a>
+        <a href="contact.html" class="btn-outline">Kunjungi Kami</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card-stack">
+        <div class="hero-card-shadow"></div>
+        <div class="hero-card-main">
+          <div class="hero-card-top">
+            <img src="assets/logo_camel.png" alt="Camell" class="camel-hero-svg nav-logo-img" style="opacity:0.28;">
+          </div>
+
+          <div class="hero-card-body">
+            <div class="hero-card-name" id="heroCardName">Signature Navy Latte</div>
+            <div class="hero-card-desc" id="heroCardDesc">Espresso · Butterfly Pea · Oat Milk</div>
+            <div class="hero-card-tags">
+              <span class="hero-tag-pill">Bestseller</span>
+              <span class="hero-tag-pill gold">Seasonal</span>
+            </div>
+            <div class="hero-open">
+              <span class="open-dot"></span>
+              <span id="heroOpenText">Open · Tutup jam 24:00</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="float-badge b-tr">
+          <div class="fb-icon fb-blue"><img src="assets/coffee.svg" alt="" class="icon-emoji"></div>
+          <div><div>Fresh Pastry</div><div class="fb-sub">Dibuat tiap pagi</div></div>
+        </div>
+        <div class="float-badge b-bl">
+          <div class="fb-icon fb-gold"><img src="assets/wifi.svg" alt="" class="icon-emoji"></div>
+          <div><div>Free WiFi</div><div class="fb-sub">100 Mbps</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAVE: cream → cream-dark -->
+<div class="wave-down" style="display:block;line-height:0;font-size:0;margin-bottom:-2px;background:var(--cream);">
+  <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,30 C240,58 480,2 720,30 C960,58 1200,2 1440,30 L1440,60 L0,60Z" fill="var(--cream-dark)"/>
+  </svg>
+</div>
+
+<!-- POPULAR MENU -->
+<section id="popular">
+  <div class="section-header">
+    <div class="section-tag">Menu Favorit</div>
+    <h2 class="section-title">Yang Paling Banyak Dipesan</h2>
+    <p class="section-sub">Pilihan terbaik dari dapur Camell.</p>
+  </div>
+  <div class="menu-preview-grid" id="favMenuGrid"></div>
+  <div class="popular-cta">
+    <a href="menu.html" class="btn-primary">Lihat Semua Menu</a>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-tag">Kata Mereka</div>
+    <h2 class="section-title">Pengalaman pelanggan <em style="font-style:italic;font-family:var(--font-display);">kami.</em></h2>
+    <p class="section-sub">Berbagai ulasan positif dari pelanggan setia Camell.</p>
+  </div>
+  <div class="testi-slider">
+    <div class="testi-slides">
+      <div class="testi-track" id="testiTrack">
+        <!-- slides injected by JS -->
+      </div>
+    </div>
+    <div class="testi-controls" id="testiControls" style="display:none">
+      <button class="testi-btn" id="testiPrev">&#8592;</button>
+      <div class="testi-dots" id="testiDots"></div>
+      <button class="testi-btn" id="testiNext">&#8594;</button>
+    </div>
+  </div>
+</section>
+
+<!-- CAMELL NEWS -->
+<section id="news">
+  <div class="section-header">
+    <div class="section-tag">CamellNews</div>
+    <h2 class="section-title">Update Terbaru</h2>
+    <p class="section-sub">Promo, menu baru, event spesial; semua ada di sini.</p>
+  </div>
+  <div class="news-grid" id="newsGrid">
+    <!-- Injected by shared news data -->
+  </div>
+</section>
+
+<!-- AMBIANCE -->
+<section id="ambiance">
+  <div class="section-header">
+    <div class="section-tag">Suasana</div>
+    <h2 class="section-title">Setiap sudut bercerita.</h2>
+    <p class="section-sub">Interior cafe yang photogenic dan instagramable membuat setiap momen layak diabadikan.</p>
+  </div>
+  <div class="ambiance-grid" id="ambianceGrid">
+    <div class="amb-item big"><span><img src="assets/chair.svg" alt="" class="icon-emoji"></span><div class="amb-label">Main Hall</div></div>
+    <div class="amb-item mid"><span><img src="assets/coffee.svg" alt="" class="icon-emoji"></span><div class="amb-label">Brewing Bar</div></div>
+    <div class="amb-item mid"><span><img src="assets/croissant.svg" alt="" class="icon-emoji"></span><div class="amb-label">Pastry Display</div></div>
+    <div class="amb-item mid" style="background:rgba(74,144,196,0.12);border:1px solid rgba(74,144,196,0.2)"><span><img src="assets/photo.svg" alt="" class="icon-emoji"></span><div class="amb-label">Photo Spots</div></div>
+    <div class="amb-item mid"><span><img src="assets/leaf.svg" alt="" class="icon-emoji"></span><div class="amb-label">Outdoor Area</div></div>
+  </div>
+</section>
+
+<!-- ABOUT SNIPPET -->
+<section id="about-snip">
+  <div class="about-snip-inner">
+    <div>
+      <div class="section-tag">Tentang Camell</div>
+      <h2 class="section-title">Lebih dari sekadar secangkir kopi.</h2>
+      <p class="section-sub">Camell hadir sebagai ruang untuk bekerja, merayakan, dan terhubung satu sama lain dengan nuansa modern yang timeless.</p>
+      <div class="about-pillars">
+        <div class="about-pillar"><div class="about-pillar-label">Konsep</div><div class="about-pillar-val">Work & Celebrate</div></div>
+        <div class="about-pillar"><div class="about-pillar-label">Suasana</div><div class="about-pillar-val">Aesthetic & Cozy</div></div>
+        <div class="about-pillar"><div class="about-pillar-label">Jam Buka</div><div class="about-pillar-val">7AM – Midnight</div></div>
+        <div class="about-pillar"><div class="about-pillar-label">Menu</div><div class="about-pillar-val">Coffee & Pastry</div></div>
+      </div>
+      <div style="margin-top:2rem;display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="about.html" class="btn-primary">Cerita Kami →</a>
+      </div>
+    </div>
+    <div class="about-visual-cards">
+      <div class="avc-col">
+        <div class="av-card navy-c avc-about-img">
+          <div class="av-card-label">Coffee Craft</div>
+        </div>
+        <div class="av-card sand-c avc-about-img">
+          <div class="av-card-label">Photo Spots</div>
+        </div>
+      </div>
+      <div class="avc-col avc-col-right">
+        <div class="av-card pale-c avc-about-img">
+          <div class="av-card-label">Fresh Pastry</div>
+        </div>
+        <div class="av-card white-c avc-about-img">
+          <div class="av-card-label">Work Space</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<div class="wave-down" style="display:block;line-height:0;font-size:0;margin-bottom:-2px;background:var(--cream);">
+  <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,25 C360,50 720,0 1080,25 C1260,37 1380,12 1440,25 L1440,50 L0,50Z" fill="var(--cream-dark)"/>
+  </svg>
+</div>
+<section id="location">
+  <div class="section-header">
+    <div class="section-tag">Kunjungi Kami</div>
+    <h2 class="section-title">Temukan Camell</h2>
+    <p class="section-sub">Parkir luas, mudah dijangkau, dan selalu siap menyambutmu.</p>
+  </div>
+  <div class="location-inner">
+    <div class="location-map">
+      <iframe id="locMapsEmbed"
+        src="https://maps.google.com/maps?q=Jl+Onta+Lama+No.70+Makassar&output=embed"
+        style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block;"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+    <div>
+      <div class="loc-block">
+        <div class="loc-label">Alamat</div>
+        <div class="loc-val" id="locAddress">Jl. Onta Lama No.70, Makassar<br>Sulawesi Selatan 90114</div>
+      </div>
+      <div class="loc-block">
+        <div class="loc-label">Jam Buka</div>
+        <div class="hour-row"><span>Senin – Kamis</span><strong id="locHoursWeekday">09:00 – 24:00</strong></div>
+        <div class="hour-row"><span>Jumat – Minggu</span><strong id="locHoursWeekend">07:00 – 24:00</strong></div>
+      </div>
+      <div class="loc-block" style="margin-bottom:0">
+        <div class="loc-label">Kontak</div>
+        <div class="loc-val">
+          <a href="https://instagram.com/camell.cafe" id="locInstagramLink" style="color:var(--accent);font-weight:600;text-decoration:none">@camell.cafe</a><br>
+          <span style="font-size:0.82rem;color:var(--text-muted)">DM untuk reservasi & event booking</span>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <a href="https://maps.google.com/maps?q=Jl+Onta+Lama+No.70+Makassar" id="locMapsLink" target="_blank" class="map-link" style="display:inline-block;">Cari Kami di Google Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="nav-logo" style="margin-bottom:0">
+          <img src="assets/logo_camel.png" alt="Camell" class="nav-logo-img logo-md">
+          <span class="nav-logo-text">CAMELL</span>
+        </div>
+        <p class="footer-desc">Work · Celebrate · Connect<br>Tempat di mana kopi yang baik dan suasana hangat saling bertemu.</p>
+        <div class="footer-socials">
+          <a class="social-btn ig" href="https://instagram.com/camell.cafe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="social-btn wa" href="https://wa.me/6282156782288" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+          <a class="social-btn tt" href="https://www.tiktok.com/@camell.cafe" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Menu</div>
+        <ul class="footer-links">
+          <li><a href="menu.html">Coffee</a></li>
+          <li><a href="menu.html">Non-Coffee</a></li>
+          <li><a href="menu.html">Food</a></li>
+          <li><a href="menu.html">Pastry</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Explore</div>
+        <ul class="footer-links">
+          <li><a href="about.html">Our Story</a></li>
+          <li><a href="index.html#ambiance">Suasana</a></li>
+          <li><a href="index.html#news">CamellNews</a></li>
+          <li><a href="contact.html">Lokasi</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Hubungi</div>
+        <ul class="footer-links">
+          <li><a href="https://instagram.com/camell.cafe">Instagram</a></li>
+          <li><a href="contact.html">Kontak Kami</a></li>
+          <li><a href="contact.html#contact-main">Reservasi Event</a></li>
+          <li><a href="dashboard.html">Admin</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Camell Cafe · Makassar. All rights reserved by Justin Dharmawan Tunggal.</span>
+      <span class="footer-tagline">"Pulang dengan hati dan pikiran yang damai." <img src="assets/logo_camel.png" alt="" class="nav-logo-img logo-sm" style="vertical-align:middle;"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/index.js"></script>
+<script src="js/navbar-scroll.js"></script>
+<script src="js/mobile-nav.js"></script>
+<script src="js/page-transition.js"></script>
+</body>
+</html>

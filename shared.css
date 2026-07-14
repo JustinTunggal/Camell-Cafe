@@ -1,0 +1,575 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Poppins:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* ── CAMELL CAFE — SHARED DESIGN SYSTEM ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Premium Sophisticated Navy & Gold Palette */
+  --navy:        #0F1E36;
+  --navy-mid:    #1A3A5C;
+  --navy-light:  #2E5F8A;
+  --navy-pale:   #F5EFE4;
+  --accent:      #D4A359; /* Premium Gold Accent */
+  --accent-mid:  #B98A46;
+
+  /* Neutrals */
+  --cream:       #FDFBF7; /* Warm Luxury Cream Background */
+  --cream-dark:  #F5EFE4;
+  --sand:        #E8D5B7;
+  --gold:        #D4A359;
+  --gold-dark:   #A07840;
+
+  /* Text */
+  --text-dark:   #0F1E36;
+  --text-mid:    #3A5568;
+  --text-muted:  #7A94A5;
+  --white:       #FFFFFF;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-xl: 32px;
+
+  /* ── TYPOGRAPHY ROLES ── */
+  /* Body / UI text  → Plus Jakarta Sans */
+  --font-body:    'Plus Jakarta Sans', sans-serif;
+  /* Taglines / hero display → Fraunces */
+  --font-display: 'Fraunces', serif;
+  /* Buttons / labels / nav → Plus Jakarta Sans */
+  --font-ui:      'Plus Jakarta Sans', sans-serif;
+  /* Card titles / descriptions → Poppins */
+  --font-card:    'Poppins', sans-serif;
+  /* Spacing unit for card grids */
+  --card-gap: 50px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ── PAGE TRANSITION ── */
+
+/*
+  Curtain wipe model:
+  - Default: curtains are OPEN (scaleX 0), overlay invisible
+  - pt-cover (set inline before first paint): curtains CLOSED (scaleX 1), no transition
+  - pt-entering: curtains retract to the right with eased transition
+  - pt-leaving:  curtains sweep in from the left, then browser navigates
+*/
+
+#page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#page-transition-overlay::before,
+#page-transition-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  will-change: transform;
+}
+#page-transition-overlay::before {
+  background: var(--accent);
+  transition: transform 0.52s cubic-bezier(0.76, 0, 0.24, 1);
+}
+#page-transition-overlay::after {
+  background: var(--navy);
+  transition: transform 0.52s cubic-bezier(0.76, 0, 0.24, 1) 0.07s;
+}
+
+/* Logo shown while curtains are closed — lives inside a clip wrapper */
+#page-transition-overlay .pt-logo-clip {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  /* Default: clip to 0 width so logo is invisible when curtains are open */
+  clip-path: inset(0 100% 0 0);
+  transition: none;
+}
+
+#page-transition-overlay .pt-logo {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--white);
+  pointer-events: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── COVER: instant closed state, no animation (set before first paint) ── */
+/* html.pt-cover hides everything until JS moves the class to body */
+html.pt-cover body { visibility: hidden; }
+
+body.pt-cover #page-transition-overlay::before,
+body.pt-cover #page-transition-overlay::after {
+  transform: scaleX(1);
+  transition: none;
+}
+body.pt-cover #page-transition-overlay .pt-logo-clip {
+  clip-path: inset(0 0% 0 0); /* fully visible */
+  transition: none;
+}
+
+/* ── ENTERING: curtains retract to the right ── */
+body.pt-entering #page-transition-overlay::before {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.32s cubic-bezier(0.76, 0, 0.24, 1) 0.07s;
+}
+body.pt-entering #page-transition-overlay::after {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.32s cubic-bezier(0.76, 0, 0.24, 1) 0.02s;
+}
+/* Logo clip retracts in sync with the gold curtain (::before) */
+body.pt-entering #page-transition-overlay .pt-logo-clip {
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.32s cubic-bezier(0.76, 0, 0.24, 1) 0.07s;
+}
+
+/* ── LEAVING: curtains sweep in from the left ── */
+body.pt-leaving #page-transition-overlay {
+  pointer-events: all;
+}
+body.pt-leaving #page-transition-overlay::before {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.26s cubic-bezier(0.76, 0, 0.24, 1);
+}
+body.pt-leaving #page-transition-overlay::after {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.26s cubic-bezier(0.76, 0, 0.24, 1) 0.04s;
+}
+/* Logo sweeps in with the gold curtain — same timing */
+body.pt-leaving #page-transition-overlay .pt-logo-clip {
+  clip-path: inset(0 0% 0 0);
+  transition: clip-path 0.26s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* ── PAGE CONTENT: fade-up after curtains retract ── */
+@keyframes ptFadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep ALL content invisible while curtain is covering the screen */
+body.pt-cover > *:not(#page-transition-overlay):not(script):not(style):not(link),
+body.pt-cover > nav {
+  visibility: hidden;
+}
+
+/* Curtain fully gone at 0.07s + 0.32s = 0.39s — start fade after that */
+body.pt-entering > *:not(#page-transition-overlay):not(script):not(style):not(link) {
+  animation: ptFadeUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) 0.40s both;
+  will-change: opacity, transform;
+}
+body.pt-entering > nav {
+  animation-delay: 0.38s;
+}
+
+/* ── NAVBAR ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5%; height: 76px; /* Elegant slightly taller start */
+  background: rgba(15, 30, 54, 0.96);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid transparent; /* No visible line against dark hero */
+  transition: background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-bottom-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: background-color, height;
+}
+nav.scrolled { 
+  box-shadow: 0 10px 30px rgba(15, 30, 54, 0.12); 
+  height: 66px; /* Fluid height shrinkage transition on scroll */
+  background: rgba(15, 30, 54, 0.98);
+  border-bottom-color: rgba(212, 163, 89, 0.15);
+}
+
+/* When hero is cream, navbar starts transparent and turns navy on scroll */
+nav.cream-hero {
+  background: transparent;
+  border-bottom-color: transparent;
+}
+nav.cream-hero.scrolled {
+  background: rgba(15, 30, 54, 0.98);
+  border-bottom-color: rgba(212, 163, 89, 0.15);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+/* Camel PNG = lavender lines on transparent bg.
+   Navy bg  → white camel    (default nav, footer)
+   Cream bg → navy camel     (cream-hero, navbar-cream) */
+.nav-logo-img {
+  filter: brightness(10) saturate(0);
+  transition: filter 0.3s ease;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+/* Standard logo size tokens — replaces scattered inline width/height */
+.logo-sm { width: 26px; height: 26px; }
+.logo-md { width: 36px; height: 36px; }
+.logo-lg { width: 38px; height: 38px; }
+.logo-xl { width: 64px; height: 64px; }
+nav.cream-hero .nav-logo-img,
+nav.navbar-cream .nav-logo-img {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(38%) saturate(800%) hue-rotate(185deg) brightness(85%);
+}
+nav.cream-hero.scrolled .nav-logo-img {
+  filter: brightness(10) saturate(0);
+}
+.footer-inner .nav-logo-img {
+  filter: brightness(10) saturate(0);
+}
+
+.nav-logo-text {
+  font-family: var(--font-ui);
+  font-size: 1.25rem; font-weight: 700;
+  color: var(--white); letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+/* Micro-interaction logo animation */
+.nav-logo:hover .nav-logo-text {
+  transform: scale(1.02);
+}
+
+/* On cream hero the logo text should be navy until scrolled */
+nav.cream-hero .nav-logo-text { color: var(--navy); }
+nav.cream-hero.scrolled .nav-logo-text { color: var(--white); }
+
+.nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; flex: 1; justify-content: center; }
+nav .nav-cta { flex-shrink: 0; }
+.nav-links a {
+  font-family: var(--font-ui);
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  transition: all 0.3s ease;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links a.active { border-bottom: 2px solid var(--accent); padding-bottom: 2px; }
+
+/* On cream hero, nav links are dark */
+nav.cream-hero .nav-links a { color: var(--navy-mid); }
+nav.cream-hero .nav-links a:hover { color: var(--navy); }
+nav.cream-hero.scrolled .nav-links a { color: rgba(255,255,255,0.75); }
+nav.cream-hero.scrolled .nav-links a:hover { color: var(--white); }
+
+.nav-cta {
+  font-family: var(--font-ui) !important;
+  background: var(--navy-mid) !important; color: var(--white) !important;
+  padding: 9px 22px; border-radius: 50px;
+  font-size: 0.76rem !important; font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  border-bottom: none !important;
+  text-decoration: none !important;
+  transition: all 0.3s ease !important;
+}
+nav.cream-hero .nav-cta { background: var(--navy-mid) !important; color: white !important; }
+nav.cream-hero.scrolled .nav-cta { background: var(--accent) !important; }
+.nav-cta:hover { background: var(--accent-mid) !important; transform: translateY(-1px); }
+
+/* Cream navbar — used on pages where the first section is navy, for contrast */
+nav.navbar-cream {
+  background: var(--cream);
+  border-bottom: 1px solid rgba(15,30,54,0.06);
+}
+nav.navbar-cream.scrolled {
+  background: rgba(253,251,247,0.98);
+  box-shadow: 0 10px 30px rgba(15,30,54,0.08);
+}
+nav.navbar-cream .nav-logo-text { color: var(--navy); }
+nav.navbar-cream .nav-links a { color: var(--navy-mid); }
+nav.navbar-cream .nav-links a:hover, nav.navbar-cream .nav-links a.active { color: var(--navy); }
+nav.navbar-cream .nav-cta { background: var(--navy-mid) !important; color: var(--white) !important; }
+nav.navbar-cream .nav-cta:hover { background: var(--accent-mid) !important; }
+
+/* ── EMOJI -> SVG ICONS ── */
+.icon-emoji {
+  width: 1.2em; height: 1.2em; vertical-align: -0.2em;
+  display: inline-block; object-fit: contain;
+}
+.mc-img .icon-emoji, .mc2-img .icon-emoji, .product-card-img .icon-emoji,
+.av-card-icon .icon-emoji, .amb-item .icon-emoji, .fb-icon .icon-emoji,
+.map-icon-big .icon-emoji, .map-plh-icon .icon-emoji,
+.mission-icon .icon-emoji, .channel-icon .icon-emoji,
+.info-block-icon .icon-emoji, .res-option-icon .icon-emoji {
+  width: 2.4em; height: 2.4em; vertical-align: middle;
+}
+.sf-icon .icon-emoji { width: 1.4em; height: 1.4em; vertical-align: middle; }
+.team-card-photo .icon-emoji { width: 64px; height: 64px; vertical-align: middle; }
+.story-camel-big .icon-emoji { width: 80px; height: 80px; vertical-align: middle; }
+
+/* ── BUTTONS ── */
+.btn-primary {
+  font-family: var(--font-ui);
+  background: var(--navy-mid); color: var(--white);
+  padding: 13px 30px; border-radius: 50px;
+  font-size: 0.86rem; font-weight: 600; letter-spacing: 0.04em;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); }
+
+.btn-accent {
+  font-family: var(--font-ui);
+  background: var(--accent); color: var(--white);
+  padding: 13px 30px; border-radius: 50px;
+  font-size: 0.86rem; font-weight: 600; letter-spacing: 0.04em;
+  text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-accent:hover { background: var(--accent-mid); transform: translateY(-1px); }
+
+.btn-outline {
+  font-family: var(--font-ui);
+  background: transparent; color: var(--navy);
+  padding: 12px 28px; border-radius: 50px;
+  font-size: 0.86rem; font-weight: 500; letter-spacing: 0.04em;
+  text-decoration: none; border: 1.5px solid var(--sand); cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, transform 0.15s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent-mid); transform: translateY(-1px); }
+
+.btn-outline-white {
+  font-family: var(--font-ui);
+  background: transparent; color: var(--white);
+  padding: 12px 28px; border-radius: 50px;
+  font-size: 0.86rem; font-weight: 500; letter-spacing: 0.04em;
+  text-decoration: none; border: 1.5px solid rgba(255,255,255,0.4); cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline-white:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+
+/* ── SECTION HELPERS ── */
+.section-tag {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.8rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: 700; color: var(--navy); line-height: 1.2;
+}
+.section-sub {
+  font-family: var(--font-body);
+  font-size: 0.98rem; color: var(--text-muted);
+  line-height: 1.7; margin-top: 0.7rem;
+}
+.section-header { text-align: center; margin-bottom: 3rem; }
+.section-header .section-title { margin-bottom: 0.5rem; }
+
+/* ── WAVE DIVIDERS ── */
+.wave-down {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  font-size: 0;
+  display: block;
+  margin-top: -1px;    /* Seal top gap against previous section */
+  margin-bottom: -2px; /* Seal bottom gap against next section */
+}
+.wave-down svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  vertical-align: bottom; /* Kill inline baseline gap */
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--navy);
+  padding: 60px 5% 28px;
+  color: rgba(255,255,255,0.6);
+}
+.footer-inner { max-width: 1160px; margin: 0 auto; }
+.footer-top {
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px; margin-bottom: 44px;
+}
+.footer-desc {
+  font-family: var(--font-body);
+  font-size: 0.84rem; line-height: 1.65;
+  color: rgba(255,255,255,0.45); margin-top: 12px; max-width: 230px;
+}
+.footer-socials { display: flex; gap: 12px; margin-top: 18px; }
+.social-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.65); font-size: 0.95rem;
+  font-family: var(--font-ui);
+  text-decoration: none;
+  position: relative; overflow: hidden; z-index: 1;
+}
+.social-btn i {
+  position: relative; transition: 0.5s; z-index: 2;
+}
+.social-btn:hover i { color: #fff; transform: rotateY(360deg); }
+.social-btn::before {
+  content: ''; position: absolute; top: 100%; left: 0;
+  width: 100%; height: 100%;
+  transition: 0.5s; z-index: 1;
+}
+.social-btn:hover::before { top: 0; }
+.social-btn.ig::before { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.social-btn.wa::before { background: #25D366; }
+.social-btn.tt::before { background: #010101; }
+.footer-col-title {
+  font-family: var(--font-ui);
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 1rem;
+}
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 8px; }
+.footer-links a {
+  font-family: var(--font-body);
+  color: rgba(255,255,255,0.55); text-decoration: none;
+  font-size: 0.88rem; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--accent); }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.76rem; color: rgba(255,255,255,0.3);
+  font-family: var(--font-body);
+  flex-wrap: wrap; gap: 8px;
+}
+.footer-tagline {
+  font-family: var(--font-display);
+  font-style: italic; font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+}
+
+/* ── CARD ── */
+.card {
+  background: var(--white);
+  border-radius: 0;
+  border: 1px solid rgba(26,58,92,0.12);
+  border-top: 3px solid var(--accent);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  font-family: var(--font-card);
+}
+.card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 0 0 rgba(15,30,54,0.06); }
+
+/* ── TAG PILL ── */
+.pill {
+  font-family: var(--font-ui);
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--navy-pale); color: var(--navy);
+  font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 5px 14px; border-radius: 50px;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  /* nav-links hidden by mobile-nav.js drawer — no extra rule needed */
+  .footer-top { grid-template-columns: 1fr; }
+}
+/* ── MOBILE NAV (hamburger) ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column; justify-content: center; gap: 5px;
+  width: 38px; height: 38px; border: none; background: transparent;
+  cursor: pointer; z-index: 210;
+}
+.nav-toggle span {
+  display: block; width: 100%; height: 2px; border-radius: 2px;
+  background: var(--white); transition: all 0.3s ease;
+}
+nav.cream-hero .nav-toggle span { background: var(--navy); }
+nav.cream-hero.scrolled .nav-toggle span { background: var(--white); }
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .nav-toggle { display: flex; margin-left: auto; }
+  .nav-links {
+    position: fixed; top: 0; right: 0; height: 100vh;
+    width: min(78vw, 320px);
+    background: var(--navy);
+    flex-direction: column; align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0; padding: 100px 32px 40px;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    z-index: 205;
+  }
+  .nav-links.open { transform: translateX(0); }
+  .nav-links li { width: 100%; }
+  .nav-links a {
+    display: block; width: 100%; padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.85) !important;
+  }
+  .nav-links a.active { border-bottom: 1px solid var(--accent); }
+  .nav-links li.nav-cta-item { border-bottom: none !important; margin-top: 16px; }
+  .nav-links li.nav-cta-item .nav-cta {
+    margin: 0 !important; text-align: center; border-bottom: none !important;
+    text-decoration: none !important; font-family: var(--font-ui) !important;
+    background: var(--accent) !important; color: var(--white) !important;
+    border-radius: 50px !important; padding: 12px 0 !important; display: block !important;
+    width: 100%;
+  }
+}
+@media (min-width: 861px) {
+  .nav-backdrop {
+    position: fixed; inset: 0; background: rgba(13,31,53,0.5);
+    z-index: 204; opacity: 0; pointer-events: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+  .nav-backdrop.open { opacity: 1; pointer-events: all; }
+}
+
+/* SITE-WIDE TOAST (replaces blocking alert() on public pages) */
+.site-toast {
+  position: fixed; bottom: 24px; right: 24px; left: auto;
+  max-width: calc(100% - 48px);
+  background: var(--navy); color: white;
+  padding: 12px 20px; border-radius: 12px;
+  font-size: 0.84rem; font-weight: 500;
+  box-shadow: 0 8px 24px rgba(13,31,53,0.2);
+  transform: translateY(80px); opacity: 0; pointer-events: none;
+  transition: transform 0.3s, opacity 0.3s; z-index: 9999;
+}
+.site-toast.show { transform: translateY(0); opacity: 1; }
+.site-toast.success { background: #3BB273; }
+.site-toast.danger  { background: #E05D5D; }
+@media (max-width: 600px) {
+  .site-toast { left: 16px; right: 16px; bottom: 16px; max-width: none; text-align: center; }
+}

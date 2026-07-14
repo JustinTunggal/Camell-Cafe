@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Admin Dashboard — CAMELL Cafe</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.js" integrity="sha384-yifgV8iFWyp5cgu+V1G1rtlEHpEErPlL5fTrkUELIsWq0CIVDON2WP/NlXVJT3vO" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <svg width="32" height="32" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#2E5F8A"/><path d="M10 26 Q10 22 13 22 Q12 19 14 17 Q14 14 17 14 Q17 11 20 12 Q22 10 24 13 Q27 12 27 16 Q29 17 29 20 Q31 20 31 23 Q31 26 29 26 L10 26 Z" fill="white"/></svg>
+      <span class="login-logo-text">CAMELL Admin</span>
+    </div>
+    <div class="login-title">Masuk ke Dashboard</div>
+    <div class="login-sub">Gunakan akun admin Supabase untuk masuk.</div>
+    <div class="login-error" id="loginError"></div>
+    <div class="fp-group"><label class="fp-label">Email</label><input class="fp-input" id="loginEmail" type="email" placeholder="admin@camell.cafe"></div>
+    <div class="fp-group"><label class="fp-label">Password</label><input class="fp-input" id="loginPassword" type="password" placeholder="••••••••"></div>
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Masuk</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dash-layout" id="dashLayout" style="display:none">
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg width="28" height="28" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="20" fill="#2E5F8A"/><path d="M10 26 Q10 22 13 22 Q12 19 14 17 Q14 14 17 14 Q17 11 20 12 Q22 10 24 13 Q27 12 27 16 Q29 17 29 20 Q31 20 31 23 Q31 26 29 26 L10 26 Z" fill="white"/></svg>
+      <span class="sidebar-logo-text">CAMELL</span>
+      <span class="sidebar-logo-badge">ADMIN</span>
+    </div>
+
+    <div class="sidebar-section-label">Konten</div>
+    <ul class="sidebar-nav">
+      <li><a href="#" class="active" data-tab="news"     onclick="switchTab(event,'news')"    ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg></span> CamellNews</a></li>
+      <li><a href="#" data-tab="menu"     onclick="switchTab(event,'menu')"    ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></span> Menu</a></li>
+      <li><a href="#" data-tab="messages" onclick="switchTab(event,'messages')"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> Pesan Masuk <span class="unread-badge" id="unreadBadge" style="display:none">0</span></a></li>
+      <li><a href="#" data-tab="reviews" onclick="switchTab(event,'reviews')"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span> Ulasan <span class="unread-badge" id="pendingReviewBadge" style="display:none">0</span></a></li>
+    </ul>
+
+    <div class="sidebar-section-label">Tampilan</div>
+    <ul class="sidebar-nav">
+      <li><a href="#" data-tab="ambiance"  onclick="switchTab(event,'ambiance')" ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></span> Foto Suasana</a></li>
+      <li><a href="#" data-tab="homeabout" onclick="switchTab(event,'homeabout')"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Foto Home About</a></li>
+      <li><a href="#" data-tab="storyph"   onclick="switchTab(event,'storyph')"  ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Foto Story</a></li>
+      <li><a href="#" data-tab="events"    onclick="switchTab(event,'events')"   ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span> Foto Private Event</a></li>
+      <li><a href="#" data-tab="team"      onclick="switchTab(event,'team')"     ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Tim Kami</a></li>
+      <li><a href="#" data-tab="cafeinfo"  onclick="switchTab(event,'cafeinfo')" ><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Info Cafe</a></li>
+    </ul>
+
+    <div class="sidebar-section-label">Halaman</div>
+    <ul class="sidebar-nav">
+      <li><a href="index.html" target="_blank"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span> Home</a></li>
+      <li><a href="menu.html"  target="_blank"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></span> Menu</a></li>
+      <li><a href="about.html" target="_blank"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span> Story</a></li>
+      <li><a href="contact.html" target="_blank"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span> Kontak</a></li>
+    </ul>
+
+    <div class="sidebar-section-label">Alat</div>
+    <ul class="sidebar-nav">
+      <li><a href="storage-cleanup.html"><span class="nav-icon-svg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></span> Storage Cleanup</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">AD</div>
+        <div class="sidebar-user-info"><div class="sidebar-user-name" id="sidebarUserEmail">Admin</div><div class="sidebar-user-role">Super Admin</div></div>
+      </div>
+      <a href="#" class="sidebar-view-site" onclick="handleLogout(event)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Keluar
+      </a>
+    </div>
+  </aside>
+
+  <div class="dash-main">
+    <div class="dash-topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="dash-topbar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+        <div class="topbar-title" id="topbarTitle">CamellNews Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-btn primary" id="addBtn" onclick="openNewForm()">+ Tambah Berita</button>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <!-- STATS ROW -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card"><div class="stat-label" id="statLabel1">Total</div><div class="stat-num" id="stat1">0</div><div class="stat-change neutral" id="statSub1">—</div></div>
+        <div class="stat-card"><div class="stat-label" id="statLabel2">Dipublikasi</div><div class="stat-num" id="stat2">0</div><div class="stat-change up" id="statSub2">Live</div></div>
+        <div class="stat-card"><div class="stat-label" id="statLabel3">Draft</div><div class="stat-num" id="stat3">0</div><div class="stat-change neutral" id="statSub3">—</div></div>
+        <div class="stat-card"><div class="stat-label" id="statLabel4">Kategori</div><div class="stat-num" id="stat4">0</div><div class="stat-change neutral" id="statSub4">—</div></div>
+      </div>
+
+      <div class="dash-two-col">
+
+        <!-- LEFT PANELS -->
+        <div>
+          <!-- NEWS LIST -->
+          <div class="panel tab-pane active" id="pane-news-list">
+            <div class="panel-header"><div class="panel-title">Daftar Berita</div></div>
+            <div class="news-list" id="newsList"><div class="panel-loading">Memuat...</div></div>
+          </div>
+
+          <!-- MENU LIST -->
+          <div class="panel tab-pane" id="pane-menu-list">
+            <div class="panel-header"><div class="panel-title">Daftar Menu</div></div>
+            <div class="cat-filter" id="menuCatFilter">
+              <!-- Custom dropdown for menu filter -->
+              <div class="custom-select" id="menuDropdown">
+                <div class="custom-select__trigger">
+                  <span id="menuDropdownLabel">Semua</span>
+                  <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                </div>
+                <div class="custom-select__options">
+                  <div class="custom-select__option selected" data-value="all" onclick="selectMenuDropdown(this,'all','Semua')">Semua</div>
+                  <div class="custom-select__option" data-value="coffee" onclick="selectMenuDropdown(this,'coffee','Coffee')">Coffee</div>
+                  <div class="custom-select__option" data-value="non-coffee" onclick="selectMenuDropdown(this,'non-coffee','Non-Coffee')">Non-Coffee</div>
+                  <div class="custom-select__option" data-value="food" onclick="selectMenuDropdown(this,'food','Food')">Food</div>
+                  <div class="custom-select__option" data-value="pastry" onclick="selectMenuDropdown(this,'pastry','Pastry')">Pastry</div>
+                </div>
+              </div>
+            </div>
+            <div class="menu-list" id="menuList"><div class="panel-loading">Memuat...</div></div>
+          </div>
+
+          <!-- MESSAGES INBOX -->
+          <div class="panel tab-pane" id="pane-messages-list">
+            <div class="panel-header"><div class="panel-title">Pesan Masuk</div><button class="panel-action" onclick="loadMessages()">Refresh</button></div>
+            <div id="messagesList"><div class="panel-loading">Memuat...</div></div>
+          </div>
+
+          <!-- REVIEWS MODERATION -->
+          <div class="panel tab-pane" id="pane-reviews-list">
+            <div class="panel-header"><div class="panel-title">Ulasan (Moderasi)</div><button class="panel-action" onclick="loadReviews()">Refresh</button></div>
+            <div id="reviewsList"><div class="panel-loading">Memuat...</div></div>
+          </div>
+
+          <!-- AMBIANCE LIST -->
+          <div class="panel tab-pane" id="pane-ambiance-list">
+            <div class="panel-header"><div class="panel-title">Foto Suasana</div></div>
+            <div class="photo-grid-admin" id="ambianceList"></div>
+            <div class="page-preview-block" id="ambiancePagePreview" style="display:none;">
+              <div class="ppb-label">Preview — Tampilan di Halaman Home</div>
+              <div class="ppb-inner" id="ambiancePagePreviewInner"></div>
+            </div>
+          </div>
+
+          <!-- HOME ABOUT (4 card slots) -->
+          <div class="panel tab-pane" id="pane-homeabout-list">
+            <div class="panel-header"><div class="panel-title">Foto Home "Tentang Camell" (4 Kartu)</div></div>
+            <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;" id="homeAboutPreview">
+              <div><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;">COFFEE CRAFT</div><div id="haPreview_coffee_craft" style="border-radius:8px;overflow:hidden;border:1.5px solid var(--sand);background:var(--cream);min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;">Belum ada foto</div></div>
+              <div><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;">PHOTO SPOTS</div><div id="haPreview_photo_spots" style="border-radius:8px;overflow:hidden;border:1.5px solid var(--sand);background:var(--cream);min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;">Belum ada foto</div></div>
+              <div><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;">FRESH PASTRY</div><div id="haPreview_fresh_pastry" style="border-radius:8px;overflow:hidden;border:1.5px solid var(--sand);background:var(--cream);min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;">Belum ada foto</div></div>
+              <div><div style="font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:var(--accent);margin-bottom:6px;">WORK SPACE</div><div id="haPreview_work_space" style="border-radius:8px;overflow:hidden;border:1.5px solid var(--sand);background:var(--cream);min-height:80px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;">Belum ada foto</div></div>
+            </div>
+            <div class="page-preview-block" id="homeAboutPagePreview" style="display:none;">
+              <div class="ppb-label">Preview — Tampilan di Halaman Home (Tentang Camell)</div>
+              <div class="ppb-inner" id="homeAboutPagePreviewInner"></div>
+            </div>
+          </div>
+
+          <!-- STORY PHOTO (single photo) -->
+          <div class="panel tab-pane" id="pane-storyph-list">
+            <div class="panel-header"><div class="panel-title">Foto Halaman Story</div></div>
+            <div class="single-photo-preview" id="storyPhPreview"></div>
+            <div class="page-preview-block" id="storyPagePreview" style="display:none;">
+              <div class="ppb-label">Preview — Tampilan di Halaman Story</div>
+              <div class="ppb-inner" id="storyPagePreviewInner"></div>
+            </div>
+          </div>
+
+          <!-- EVENT PHOTOS -->
+          <div class="panel tab-pane" id="pane-events-list">
+            <div class="panel-header"><div class="panel-title">Foto Private Event</div></div>
+            <div class="photo-grid-admin" id="eventsList"></div>
+            <div class="page-preview-block" id="eventsPagePreview" style="display:none;">
+              <div class="ppb-label">Preview — Tampilan di Halaman Kontak</div>
+              <div class="ppb-inner" id="eventsPagePreviewInner"></div>
+            </div>
+          </div>
+
+          <!-- TEAM LIST -->
+          <div class="panel tab-pane" id="pane-team-list">
+            <div class="panel-header"><div class="panel-title">Tim Kami</div></div>
+            <div id="teamList"><div class="panel-loading">Memuat...</div></div>
+            <div class="page-preview-block" id="teamPagePreview" style="display:none;">
+              <div class="ppb-label">Preview — Tampilan di Halaman Story</div>
+              <div class="ppb-inner" id="teamPagePreviewInner"></div>
+            </div>
+          </div>
+
+          <!-- CAFE INFO (redirect notice removed - form is full width now) -->
+          <div class="panel tab-pane" id="pane-cafeinfo-list" style="display:none!important"></div>
+        </div>
+
+        <!-- RIGHT PANELS (forms) -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- NEWS FORM -->
+          <div class="panel tab-pane active" id="pane-news-form">
+            <div class="panel-header"><div class="panel-title" id="newsFormTitle">Tambah Berita</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="newsEditId">
+              <div class="fp-group"><label class="fp-label">Judul *</label><input class="fp-input" id="fTitle" type="text" placeholder="Judul berita..." oninput="updatePreview('newsPreview',this.value)"></div>
+              <div class="preview-block" id="newsPreview" style="display:none"></div>
+              <div class="fp-group"><label class="fp-label">Ringkasan *</label><textarea class="fp-textarea" id="fExcerpt" placeholder="Deskripsi singkat..."></textarea></div>
+              <div class="fp-group"><label class="fp-label">Foto Berita</label>
+                <input type="hidden" id="fImageUrl">
+                <label class="file-upload-label" for="fImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="fImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="fImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('fImageFile','fImgPrev','fImageFileLabel')">
+                <div id="fImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB.</div>
+              </div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label">Kategori</label>
+                  <div class="custom-select" id="newsCatDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="newsCatLabel">Promo</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="Promo" onclick="selectDropdown('newsCatDropdown','newsCatLabel','fCat',this,'Promo')">Promo</div>
+                      <div class="custom-select__option" data-value="Menu Baru" onclick="selectDropdown('newsCatDropdown','newsCatLabel','fCat',this,'Menu Baru')">Menu Baru</div>
+                      <div class="custom-select__option" data-value="Event" onclick="selectDropdown('newsCatDropdown','newsCatLabel','fCat',this,'Event')">Event</div>
+                      <div class="custom-select__option" data-value="Info" onclick="selectDropdown('newsCatDropdown','newsCatLabel','fCat',this,'Info')">Info</div>
+                      <div class="custom-select__option" data-value="Update" onclick="selectDropdown('newsCatDropdown','newsCatLabel','fCat',this,'Update')">Update</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="fCat" value="Promo">
+                </div>
+                <div class="fp-group"><label class="fp-label">Status</label>
+                  <div class="custom-select" id="newsStatusDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="newsStatusLabel">Dipublikasi</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="pub" onclick="selectDropdown('newsStatusDropdown','newsStatusLabel','fStatus',this,'Dipublikasi')">Dipublikasi</div>
+                      <div class="custom-select__option" data-value="dft" onclick="selectDropdown('newsStatusDropdown','newsStatusLabel','fStatus',this,'Draft')">Draft</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="fStatus" value="pub">
+                </div>
+              </div>
+              <div class="fp-group"><label class="fp-label">Warna Kartu</label>
+                <div class="custom-select" id="newsBgDropdown">
+                  <div class="custom-select__trigger">
+                    <span id="newsBgLabel">Navy Blue</span>
+                    <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                  </div>
+                  <div class="custom-select__options">
+                    <div class="custom-select__option selected" data-value="navy-bg" onclick="selectDropdown('newsBgDropdown','newsBgLabel','fBg',this,'Navy Blue')">Navy Blue</div>
+                    <div class="custom-select__option" data-value="sand-bg" onclick="selectDropdown('newsBgDropdown','newsBgLabel','fBg',this,'Sand')">Sand</div>
+                    <div class="custom-select__option" data-value="navy-dark" onclick="selectDropdown('newsBgDropdown','newsBgLabel','fBg',this,'Navy Dark')">Navy Dark</div>
+                  </div>
+                </div>
+                <input type="hidden" id="fBg" value="navy-bg">
+              </div>
+              <div class="fp-btns">
+                <button class="fp-btn secondary" onclick="resetNewsForm()" type="button">Reset</button>
+                <button class="fp-btn primary" onclick="saveNewsEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- MENU FORM -->
+          <div class="panel tab-pane" id="pane-menu-form">
+            <div class="panel-header"><div class="panel-title" id="menuFormTitle">Tambah Menu</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="menuEditId">
+              <div class="fp-group"><label class="fp-label">Nama Item *</label><input class="fp-input" id="mName" type="text" placeholder="Contoh: Camell Signature Latte"></div>
+              <div class="fp-group"><label class="fp-label">Deskripsi</label><textarea class="fp-textarea" id="mDesc" placeholder="Deskripsi singkat..."></textarea></div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label">Kategori</label>
+                  <div class="custom-select" id="menuCatFormDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="menuCatFormLabel">Coffee</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="coffee" onclick="selectDropdown('menuCatFormDropdown','menuCatFormLabel','mCat',this,'Coffee')">Coffee</div>
+                      <div class="custom-select__option" data-value="non-coffee" onclick="selectDropdown('menuCatFormDropdown','menuCatFormLabel','mCat',this,'Non-Coffee')">Non-Coffee</div>
+                      <div class="custom-select__option" data-value="food" onclick="selectDropdown('menuCatFormDropdown','menuCatFormLabel','mCat',this,'Food')">Food</div>
+                      <div class="custom-select__option" data-value="pastry" onclick="selectDropdown('menuCatFormDropdown','menuCatFormLabel','mCat',this,'Pastry')">Pastry</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="mCat" value="coffee">
+                </div>
+                <div class="fp-group"><label class="fp-label">Harga (Rp) *</label><input class="fp-input" id="mPrice" type="number" placeholder="42000" min="0"></div>
+              </div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label">Badge</label>
+                  <div class="custom-select" id="menuBadgeDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="menuBadgeLabel">—</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="" onclick="selectDropdown('menuBadgeDropdown','menuBadgeLabel','mBadge',this,'—')">—</div>
+                      <div class="custom-select__option" data-value="best" onclick="selectDropdown('menuBadgeDropdown','menuBadgeLabel','mBadge',this,'Best')">Best</div>
+                      <div class="custom-select__option" data-value="new" onclick="selectDropdown('menuBadgeDropdown','menuBadgeLabel','mBadge',this,'New')">New</div>
+                      <div class="custom-select__option" data-value="fav" onclick="selectDropdown('menuBadgeDropdown','menuBadgeLabel','mBadge',this,'Fav')">Fav</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="mBadge" value="">
+                </div>
+                <div class="fp-group"><label class="fp-label">Hot/Iced</label>
+                  <div class="custom-select" id="menuHotDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="menuHotLabel">—</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="" onclick="selectDropdown('menuHotDropdown','menuHotLabel','mHot',this,'—')">—</div>
+                      <div class="custom-select__option" data-value="Hot / Iced" onclick="selectDropdown('menuHotDropdown','menuHotLabel','mHot',this,'Hot / Iced')">Hot / Iced</div>
+                      <div class="custom-select__option" data-value="Iced only" onclick="selectDropdown('menuHotDropdown','menuHotLabel','mHot',this,'Iced only')">Iced only</div>
+                      <div class="custom-select__option" data-value="Hot only" onclick="selectDropdown('menuHotDropdown','menuHotLabel','mHot',this,'Hot only')">Hot only</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="mHot" value="">
+                </div>
+              </div>
+              <div class="fp-group"><label class="fp-label">Foto Item</label>
+                <input type="hidden" id="mImageUrl">
+                <label class="file-upload-label" for="mImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="mImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="mImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('mImageFile','mImgPrev','mImageFileLabel')">
+                <div id="mImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB. Kosongkan = icon kategori ditampilkan sebagai fallback.</div>
+              </div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label"><input type="checkbox" id="mIsFavorite"> Tampil di Home (Favorit)</label></div>
+                <div class="fp-group"><label class="fp-label"><input type="checkbox" id="mIsFeatured"> Tampil di Story (Produk)</label></div>
+              </div>
+              <div class="fp-btns">
+                <button class="fp-btn secondary" onclick="resetMenuForm()" type="button">Reset</button>
+                <button class="fp-btn primary" onclick="saveMenuEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- AMBIANCE FORM -->
+          <div class="panel tab-pane" id="pane-ambiance-form">
+            <div class="panel-header"><div class="panel-title" id="ambianceFormTitle">Tambah Foto Suasana</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="ambianceEditId">
+              <div class="fp-group"><label class="fp-label">Foto *</label>
+                <input type="hidden" id="ambUrl">
+                <label class="file-upload-label" for="ambImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="ambImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="ambImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('ambImageFile','ambImgPrev','ambImageFileLabel')">
+                <div id="ambImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB.</div>
+              </div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label">Label</label><input class="fp-input" id="ambLabel" type="text" placeholder="Main Hall"></div>
+                <div class="fp-group"><label class="fp-label">Ukuran</label>
+                  <div class="custom-select" id="ambSizeDropdown">
+                    <div class="custom-select__trigger">
+                      <span id="ambSizeLabel">Normal</span>
+                      <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                    </div>
+                    <div class="custom-select__options">
+                      <div class="custom-select__option selected" data-value="mid" onclick="selectDropdown('ambSizeDropdown','ambSizeLabel','ambSize',this,'Normal')">Normal</div>
+                      <div class="custom-select__option" data-value="big" onclick="selectDropdown('ambSizeDropdown','ambSizeLabel','ambSize',this,'Besar (full width)')">Besar (full width)</div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="ambSize" value="mid">
+                </div>
+              </div>
+              <div class="fp-group"><label class="fp-label">Urutan</label><input class="fp-input" id="ambOrder" type="number" value="0" min="0"></div>
+              <div class="fp-btns">
+                <button class="fp-btn secondary" onclick="resetAmbianceForm()" type="button">Reset</button>
+                <button class="fp-btn primary" onclick="saveAmbianceEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- HOME ABOUT FORM -->
+          <!-- HOME ABOUT FORM (4 slots) -->
+          <div class="panel tab-pane" id="pane-homeabout-form">
+            <div class="panel-header"><div class="panel-title">Foto Home "Tentang Camell"</div></div>
+            <div class="form-panel" style="display:flex;flex-direction:column;gap:20px;">
+              <!-- Coffee Craft -->
+              <div class="fp-group"><label class="fp-label">Coffee Craft</label>
+                <input type="hidden" id="homeAboutUrl_coffee_craft">
+                <label class="file-upload-label" for="haFile_coffee_craft">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="haFileLabel_coffee_craft">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="haFile_coffee_craft" type="file" accept="image/*" onchange="handleFileInputChange('haFile_coffee_craft','haImgPrev_coffee_craft','haFileLabel_coffee_craft')">
+                <div id="haImgPrev_coffee_craft" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+              </div>
+              <!-- Photo Spots -->
+              <div class="fp-group"><label class="fp-label">Photo Spots</label>
+                <input type="hidden" id="homeAboutUrl_photo_spots">
+                <label class="file-upload-label" for="haFile_photo_spots">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="haFileLabel_photo_spots">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="haFile_photo_spots" type="file" accept="image/*" onchange="handleFileInputChange('haFile_photo_spots','haImgPrev_photo_spots','haFileLabel_photo_spots')">
+                <div id="haImgPrev_photo_spots" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+              </div>
+              <!-- Fresh Pastry -->
+              <div class="fp-group"><label class="fp-label">Fresh Pastry</label>
+                <input type="hidden" id="homeAboutUrl_fresh_pastry">
+                <label class="file-upload-label" for="haFile_fresh_pastry">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="haFileLabel_fresh_pastry">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="haFile_fresh_pastry" type="file" accept="image/*" onchange="handleFileInputChange('haFile_fresh_pastry','haImgPrev_fresh_pastry','haFileLabel_fresh_pastry')">
+                <div id="haImgPrev_fresh_pastry" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+              </div>
+              <!-- Work Space -->
+              <div class="fp-group"><label class="fp-label">Work Space</label>
+                <input type="hidden" id="homeAboutUrl_work_space">
+                <label class="file-upload-label" for="haFile_work_space">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="haFileLabel_work_space">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="haFile_work_space" type="file" accept="image/*" onchange="handleFileInputChange('haFile_work_space','haImgPrev_work_space','haFileLabel_work_space')">
+                <div id="haImgPrev_work_space" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+              </div>
+              <div class="fp-hint">Setiap foto akan muncul di kartu yang sesuai di bagian "Tentang Camell" halaman Home.</div>
+              <div class="fp-btns">
+                <button class="fp-btn primary" onclick="saveHomeAboutEntry()" type="button">Simpan Semua</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- STORY PHOTO FORM -->
+          <div class="panel tab-pane" id="pane-storyph-form">
+            <div class="panel-header"><div class="panel-title">Foto Halaman Story</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="storyPhEditId">
+              <div class="fp-group"><label class="fp-label">Foto</label>
+                <input type="hidden" id="storyPhUrl">
+                <label class="file-upload-label" for="storyPhImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="storyPhImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="storyPhImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('storyPhImageFile','storyPhImgPrev','storyPhImageFileLabel')">
+                <div id="storyPhImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB. Foto ini akan muncul di bagian "Our Story" halaman About/Story.</div>
+              </div>
+              <div class="fp-btns">
+                <button class="fp-btn primary" onclick="saveStoryPhEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- EVENT PHOTOS FORM -->
+          <div class="panel tab-pane" id="pane-events-form">
+            <div class="panel-header"><div class="panel-title" id="eventsFormTitle">Tambah Foto Event</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="eventsEditId">
+              <div class="fp-group"><label class="fp-label">Foto *</label>
+                <input type="hidden" id="evUrl">
+                <label class="file-upload-label" for="evImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="evImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="evImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('evImageFile','evImgPrev','evImageFileLabel')">
+                <div id="evImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB.</div>
+              </div>
+              <div class="fp-row">
+                <div class="fp-group"><label class="fp-label">Label</label><input class="fp-input" id="evLabel" type="text" placeholder="Birthday Party"></div>
+                <div class="fp-group"><label class="fp-label">Urutan</label><input class="fp-input" id="evOrder" type="number" value="0" min="0"></div>
+              </div>
+              <div class="fp-btns">
+                <button class="fp-btn secondary" onclick="resetEventsForm()" type="button">Reset</button>
+                <button class="fp-btn primary" onclick="saveEventsEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEAM FORM -->
+          <div class="panel tab-pane" id="pane-team-form">
+            <div class="panel-header"><div class="panel-title" id="teamFormTitle">Tambah Anggota Tim</div></div>
+            <div class="form-panel">
+              <input type="hidden" id="teamEditId">
+              <div class="fp-group"><label class="fp-label">Nama *</label><input class="fp-input" id="tName" type="text" placeholder="Sherly"></div>
+              <div class="fp-group"><label class="fp-label">Jabatan *</label><input class="fp-input" id="tRole" type="text" placeholder="Owner"></div>
+              <div class="fp-group"><label class="fp-label">Foto</label>
+                <input type="hidden" id="tImageUrl">
+                <label class="file-upload-label" for="tImageFile">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span id="tImageFileLabel">Pilih foto...</span>
+                </label>
+                <input class="fp-input-hidden-file" id="tImageFile" type="file" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml" onchange="handleFileInputChange('tImageFile','tImgPrev','tImageFileLabel')">
+                <div id="tImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                <div class="fp-hint">Format JPG, JPEG, PNG, WEBP, atau SVG. Maks 2MB. Foto akan ditampilkan saat hover pada kartu tim di halaman Story.</div>
+              </div>
+              <div class="fp-group"><label class="fp-label">Urutan</label><input class="fp-input" id="tOrder" type="number" value="0" min="0"></div>
+              <div class="fp-btns">
+                <button class="fp-btn secondary" onclick="resetTeamForm()" type="button">Reset</button>
+                <button class="fp-btn primary" onclick="saveTeamEntry()" type="button">Simpan</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAFE INFO FORM - FULL SCREEN STYLE -->
+          <div class="panel tab-pane" id="pane-cafeinfo-form">
+            <div class="panel-header"><div class="panel-title">Info Cafe</div></div>
+            <div class="form-panel cafeinfo-full">
+              <input type="hidden" id="cafeInfoId">
+              <div class="cafeinfo-grid">
+                <div class="fp-group cafeinfo-full-col"><label class="fp-label">Alamat Singkat</label><input class="fp-input" id="ciAddress" type="text" placeholder="Jl. Onta Lama No.70, Makassar"></div>
+                <div class="fp-group cafeinfo-full-col"><label class="fp-label">Alamat Lengkap</label><textarea class="fp-textarea" id="ciAddressFull" placeholder="Jl. Onta Lama No.70, Makassar, Sulawesi Selatan 90114" style="min-height:72px"></textarea></div>
+                <div class="fp-group"><label class="fp-label">Jam Buka Sen–Kam</label><input class="fp-input" id="ciWeekday" type="text" placeholder="09:00 – 24:00"></div>
+                <div class="fp-group"><label class="fp-label">Jam Buka Jum–Min</label><input class="fp-input" id="ciWeekend" type="text" placeholder="07:00 – 24:00"></div>
+                <div class="fp-group"><label class="fp-label">Instagram</label><input class="fp-input" id="ciInstagram" type="text" placeholder="@camell.cafe"></div>
+                <div class="fp-group"><label class="fp-label">WhatsApp</label><input class="fp-input" id="ciWhatsapp" type="text" placeholder="+62 812-3456-7890"></div>
+                <div class="fp-group"><label class="fp-label">Email</label><input class="fp-input" id="ciEmail" type="email" placeholder="hello@camellcafe.id"></div>
+                <div class="fp-group cafeinfo-full-col"><label class="fp-label">URL Google Maps</label><input class="fp-input" id="ciMaps" type="url" placeholder="https://maps.google.com/..."></div>
+              </div>
+              <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--sand);">
+                <div style="font-weight:700;font-size:0.82rem;letter-spacing:0.08em;color:var(--text-muted);margin-bottom:12px;">INFO HERO CARD (Tampilan Utama)</div>
+                <div class="cafeinfo-grid">
+                  <div class="fp-group cafeinfo-full-col"><label class="fp-label">Foto Hero Card</label>
+                    <input type="hidden" id="ciHeroImageUrl">
+                    <label class="file-upload-label" for="ciHeroImageFile">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                      <span id="ciHeroImageFileLabel">Pilih foto hero card...</span>
+                    </label>
+                    <input class="fp-input-hidden-file" id="ciHeroImageFile" type="file" accept="image/*" onchange="handleFileInputChange('ciHeroImageFile','ciHeroImgPrev','ciHeroImageFileLabel')">
+                    <div id="ciHeroImgPrev" class="img-preview-box" style="display:none"><img src="" alt="Preview"></div>
+                    <div class="fp-hint">Foto ini ditampilkan di bagian atas kartu hero. Format JPG/PNG/WEBP. Maks 2MB.</div>
+                  </div>
+                  <div class="fp-group cafeinfo-full-col"><label class="fp-label">Nama Menu Unggulan</label><input class="fp-input" id="ciHeroName" type="text" placeholder="Signature Navy Latte"></div>
+                  <div class="fp-group cafeinfo-full-col"><label class="fp-label">Deskripsi Menu</label><input class="fp-input" id="ciHeroDesc" type="text" placeholder="Espresso · Butterfly Pea · Oat Milk"></div>
+
+                  <!-- BADGES -->
+                  <div class="fp-group"><label class="fp-label">Badge 1 (misal: Bestseller)</label><input class="fp-input" id="ciHeroBadge1" type="text" placeholder="Bestseller"></div>
+                  <div class="fp-group"><label class="fp-label">Badge 2 (misal: Seasonal)</label><input class="fp-input" id="ciHeroBadge2" type="text" placeholder="Seasonal"></div>
+                  <!-- TOAST POPUP -->
+                  <div class="fp-group"><label class="fp-label">Toast Popup — Label</label><input class="fp-input" id="ciHeroToastLabel" type="text" placeholder="Fresh Pastry"></div>
+                  <div class="fp-group"><label class="fp-label">Toast Popup — Sublabel</label><input class="fp-input" id="ciHeroToastSub" type="text" placeholder="Dibuat tiap pagi"></div>
+                  <!-- WIFI CHIP -->
+                  <div class="fp-group"><label class="fp-label">WiFi Chip — Label</label><input class="fp-input" id="ciHeroWifiLabel" type="text" placeholder="Free WiFi"></div>
+                  <div class="fp-group"><label class="fp-label">WiFi Chip — Speed</label><input class="fp-input" id="ciHeroWifiSpeed" type="text" placeholder="100 Mbps"></div>
+                  <!-- CARD BG -->
+                  <div class="fp-group cafeinfo-full-col"><label class="fp-label">Warna Background Card Hero</label>
+                    <div class="custom-select" id="ciHeroBgDropdown">
+                      <div class="custom-select__trigger">
+                        <span id="ciHeroBgLabel">Navy Blue</span>
+                        <svg class="custom-select__arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/></svg>
+                      </div>
+                      <div class="custom-select__options">
+                        <div class="custom-select__option selected" data-value="#2E5F8A" onclick="selectDropdown('ciHeroBgDropdown','ciHeroBgLabel','ciHeroBgColor',this,'Navy Blue')">Navy Blue</div>
+                        <div class="custom-select__option" data-value="#1a3a52" onclick="selectDropdown('ciHeroBgDropdown','ciHeroBgLabel','ciHeroBgColor',this,'Navy Dark')">Navy Dark</div>
+                        <div class="custom-select__option" data-value="#4a3728" onclick="selectDropdown('ciHeroBgDropdown','ciHeroBgLabel','ciHeroBgColor',this,'Espresso Brown')">Espresso Brown</div>
+                        <div class="custom-select__option" data-value="#3d5a3e" onclick="selectDropdown('ciHeroBgDropdown','ciHeroBgLabel','ciHeroBgColor',this,'Matcha Green')">Matcha Green</div>
+                      </div>
+                    </div>
+                    <input type="hidden" id="ciHeroBgColor" value="#2E5F8A">
+                  </div>
+                  <!-- LIVE PREVIEW -->
+                  <div class="fp-group cafeinfo-full-col">
+                    <label class="fp-label">Preview Kartu Hero</label>
+                    <div id="heroCardPreview" style="margin-top:8px;"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="fp-btns" style="margin-top:16px;">
+                <button class="fp-btn primary" onclick="saveCafeInfoEntry()" type="button">Simpan Info</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUICK LINKS -->
+          <div class="panel">
+            <div class="panel-header"><div class="panel-title">Navigasi Cepat</div></div>
+            <div style="padding:16px;">
+              <div class="quick-links">
+                <a href="index.html"   target="_blank" class="quick-link"><div class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div> Home</a>
+                <a href="menu.html"    target="_blank" class="quick-link"><div class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg></div> Menu</a>
+                <a href="about.html"   target="_blank" class="quick-link"><div class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/></svg></div> Story</a>
+                <a href="contact.html" target="_blank" class="quick-link"><div class="ql-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div> Kontak</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="js/supabase-client.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

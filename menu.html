@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <script src="js/pt-cover.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Menu | CAMELL Cafe</title>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="css/menu.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.js" integrity="sha384-yifgV8iFWyp5cgu+V1G1rtlEHpEErPlL5fTrkUELIsWq0CIVDON2WP/NlXVJT3vO" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+<div id="page-transition-overlay"><div class="pt-logo-clip"><span class="pt-logo">Camell</span></div></div>
+
+<nav id="navbar" class="">
+  <a href="index.html" class="nav-logo">
+    <img src="assets/logo_camel.png" alt="Camell" class="nav-logo-img logo-lg">
+    <span class="nav-logo-text">CAMELL</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="menu.html" class="active">Menu</a></li>
+    <li><a href="about.html">Our Story</a></li>
+    <li><a href="contact.html">Kontak</a></li>
+  </ul>
+  <a href="contact.html#contact-form-section" class="nav-cta">Reservasi</a>
+</nav>
+
+<div class="page-hero">
+  <div class="section-tag page-hero-tag">Menu Kami</div>
+  <h1 class="page-hero-title">Dibuat dengan cinta,<br>disajikan dengan <em style="font-style:italic">style.</em></h1>
+  <p class="page-hero-sub">Dari signature latte, matcha kekinian, hingga croissant fresh dari oven, semuanya ada di sini.</p>
+</div>
+
+<div class="wave-down" style="display:block;line-height:0;font-size:0;margin-bottom:-2px;background:var(--navy);">
+  <svg viewBox="0 0 1440 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0,25 C360,50 720,0 1080,25 C1260,38 1380,12 1440,25 L1440,50 L0,50Z" fill="var(--cream)"/>
+  </svg>
+</div>
+
+<div class="menu-page">
+  <div class="menu-page-inner">
+    <div class="menu-tabs">
+      <button class="menu-tab active" data-filter="all">Semua</button>
+      <button class="menu-tab" data-filter="coffee">Coffee</button>
+      <button class="menu-tab" data-filter="non-coffee">Non-Coffee</button>
+      <button class="menu-tab" data-filter="food">Food</button>
+      <button class="menu-tab" data-filter="pastry">Pastry</button>
+    </div>
+
+    <div id="menuContainer">
+      <div class="menu-loading">Memuat menu</div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="nav-logo"><img src="assets/logo_camel.png" alt="Camell" class="nav-logo-img logo-md"><span class="nav-logo-text">CAMELL</span></div>
+        <p class="footer-desc">Work · Celebrate · Connect<br>Tempat di mana kopi yang baik dan suasana hangat saling bertemu.</p>
+        <div class="footer-socials">
+          <a class="social-btn ig" href="https://instagram.com/camell.cafe" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a class="social-btn wa" href="https://wa.me/6282156782288" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
+          <a class="social-btn tt" href="https://www.tiktok.com/@camell.cafe" target="_blank" rel="noopener"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div><div class="footer-col-title">Menu</div><ul class="footer-links"><li><a href="#">Coffee</a></li><li><a href="#">Non-Coffee</a></li><li><a href="#">Food</a></li><li><a href="#">Pastry</a></li></ul></div>
+      <div><div class="footer-col-title">Explore</div><ul class="footer-links"><li><a href="about.html">Our Story</a></li><li><a href="index.html#news">CamellNews</a></li><li><a href="contact.html">Lokasi</a></li></ul></div>
+      <div><div class="footer-col-title">Hubungi</div><ul class="footer-links"><li><a href="https://instagram.com/camell.cafe">Instagram</a></li><li><a href="contact.html">Kontak Kami</a></li><li><a href="contact.html">Reservasi</a></li></ul></div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Camell Cafe · Makassar. All rights reserved by Justin Dharmawan Tunggal.</span>
+      <span class="footer-tagline">"Pulang dengan hati dan pikiran yang damai." <img src="assets/logo_camel.png" alt="" class="nav-logo-img logo-sm" style="vertical-align:middle;"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/navbar-scroll.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/mobile-nav.js"></script>
+<script src="js/page-transition.js"></script>
+</body>
+</html>

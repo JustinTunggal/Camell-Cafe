@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storage Cleanup — CAMELL Cafe Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.2/dist/umd/supabase.js" integrity="sha384-yifgV8iFWyp5cgu+V1G1rtlEHpEErPlL5fTrkUELIsWq0CIVDON2WP/NlXVJT3vO" crossorigin="anonymous"></script>
+<style>
+  body { background: var(--bg, #f5f0e8); font-family:'Poppins',sans-serif; padding: 32px; }
+  .cleanup-wrap { max-width: 760px; margin: 0 auto; }
+  .cleanup-header { display:flex; align-items:center; justify-content:space-between; margin-bottom: 20px; }
+  .cleanup-header h1 { font-size: 1.4rem; margin:0; }
+  .cleanup-header a { font-size: 0.85rem; color: var(--accent, #c8843b); text-decoration:none; }
+  #cleanupStatus { margin: 16px 0; font-size: 0.9rem; color: #555; }
+  .cleanup-actions { display:flex; gap:10px; margin-bottom: 16px; }
+  .cleanup-btn { border:none; border-radius:8px; padding:10px 18px; font-weight:600; cursor:pointer; font-size:0.85rem; }
+  .cleanup-btn.primary { background: var(--accent, #c8843b); color:#fff; }
+  .cleanup-btn.danger { background:#E05D5D; color:#fff; }
+  #orphanList { display:flex; flex-direction:column; gap:8px; }
+</style>
+</head>
+<body>
+<div class="cleanup-wrap">
+  <div class="cleanup-header">
+    <h1>Storage Cleanup</h1>
+    <a href="dashboard.html">&larr; Kembali ke Dashboard</a>
+  </div>
+  <p style="font-size:0.85rem;color:#777;">
+    Alat ini memindai bucket <code>images</code> dan membandingkannya dengan semua data di database.
+    File yang tidak lagi dipakai (yatim/orphan) akan ditampilkan di bawah — tinjau dulu sebelum menghapus.
+    Ini aman dijalankan kapan saja untuk menghemat ruang penyimpanan.
+  </p>
+  <div class="cleanup-actions">
+    <button class="cleanup-btn primary" id="scanBtn">Pindai File Yatim</button>
+    <button class="cleanup-btn danger" id="deleteAllBtn" style="display:none;">Hapus Semua Yatim</button>
+  </div>
+  <div id="cleanupStatus"></div>
+  <div id="orphanList"></div>
+</div>
+
+<script src="js/supabase-client.js"></script>
+<script src="js/storage-cleanup.js"></script>
+</body>
+</html>

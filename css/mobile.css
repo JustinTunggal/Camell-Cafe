@@ -1,0 +1,1156 @@
+/* ============================================================
+   CAMELL CAFE — MOBILE & TABLET RESPONSIVE
+   Strategy:
+   • Tablet  (≤1024px): tighten gaps, scale down cards
+   • Mobile  (≤767px) : stack layouts, convert grids → carousels
+   • Small   (≤480px) : fine-tune spacing & font sizes
+   Aesthetic: same palette, fonts, border accents — untouched
+   ============================================================ */
+
+/* ─────────────────────────────────────────────
+   GLOBAL RESETS & BASE
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  body { -webkit-text-size-adjust: 100%; }
+
+  .section-header { margin-bottom: 2rem; }
+  .section-title  { font-size: clamp(1.6rem, 4vw, 2.4rem); }
+  .section-sub    { font-size: 0.9rem; }
+
+  section, #hero, #popular, #testimonials, #news,
+  #ambiance, #about-snip, #location {
+    padding-top: 70px; padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 767px) {
+  section, #hero, #popular, #testimonials, #news,
+  #ambiance, #about-snip, #location {
+    padding-top: 56px; padding-bottom: 56px;
+    padding-left: 6%; padding-right: 6%;
+  }
+  .section-title { font-size: clamp(1.4rem, 6.5vw, 1.9rem); }
+  .section-sub   { font-size: 0.86rem; }
+  .section-header { margin-bottom: 1.6rem; }
+}
+
+/* Navbar drawer handled in shared.css */
+
+/* ─────────────────────────────────────────────
+   CAROUSEL UTILITY
+   Use on any horizontal scroll list
+───────────────────────────────────────────── */
+.mob-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 16px;
+  padding-bottom: 12px;
+}
+.mob-carousel::-webkit-scrollbar { display: none; }
+.mob-carousel > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+/* Padding sentinel so last card isn't flush against edge */
+.mob-carousel::after {
+  content: '';
+  flex-shrink: 0;
+  width: 1px;
+}
+
+/* ─────────────────────────────────────────────
+   HERO — index.html
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  #hero { padding: 100px 6% 64px; min-height: auto; }
+  .hero-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+    align-items: center;
+  }
+  .hero-headline { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  .hero-card-stack  { width: 260px; height: 320px; }
+  .hero-card-main   { width: 238px; height: 298px; }
+  .hero-card-shadow { width: 238px; height: 298px; }
+  .hero-card-top    { height: 185px; }
+  .camel-hero-svg   { width: 300px; height: 300px; }
+  .float-badge { font-size: 0.66rem; padding: 7px 10px; }
+  .float-badge.b-tr { right: -6px; }
+  .float-badge.b-bl { left: -6px; }
+}
+
+@media (max-width: 767px) {
+  #hero { padding: 88px 8% 52px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 28px; }
+
+  /* Hide 3D card / camel visual on mobile */
+  .hero-visual { display: none !important; }
+
+  .hero-headline { font-size: clamp(1.8rem, 7.5vw, 2.4rem); line-height: 1.15; }
+  .hero-sub  { font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.6rem; max-width: 100%; }
+  .hero-actions {
+    flex-direction: column; gap: 10px;
+    align-items: stretch;
+  }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline {
+    justify-content: center; width: 100%;
+  }
+  .hero-blob { display: none; }
+}
+
+@media (max-width: 480px) {
+  #hero { padding: 80px 8% 44px; }
+  .hero-headline { font-size: clamp(1.6rem, 8vw, 2rem); }
+}
+
+/* ─────────────────────────────────────────────
+   POPULAR MENU — index.html (horizontal carousel)
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #popular { padding-top: 56px; padding-bottom: 56px; overflow: hidden; }
+
+  .menu-preview-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 14px;
+    padding-bottom: 26px;
+    margin-bottom: -18px;
+    margin-left: -6% !important; margin-right: -6% !important;
+    padding-left: 6% !important; padding-right: 6% !important;
+    scroll-padding-left: 6% !important;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-anchor: none;
+  }
+  .menu-preview-grid::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .menu-preview-grid::after { content: ''; flex-shrink: 0; width: 1px; }
+  .menu-preview-grid .menu-card {
+    width: 170px !important;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+  .mc-img  { height: 115px; font-size: 2rem; }
+  .mc-name { font-size: 0.85rem; }
+  .mc-desc { font-size: 0.71rem; }
+  .mc-price{ font-size: 0.85rem; }
+  .mc-body { padding: 12px 14px; }
+}
+
+/* ─────────────────────────────────────────────
+   TESTIMONIALS — index.html
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .testi-slide { grid-template-columns: 1fr 1fr; gap: 18px; }
+}
+@media (max-width: 767px) {
+  .testi-slide  { grid-template-columns: 1fr; gap: 14px; }
+  .testi-card   { padding: 20px; }
+  .testi-quote  { font-size: 0.85rem; }
+  .testi-controls { margin-top: 1.6rem; }
+}
+
+/* ─────────────────────────────────────────────
+   NEWS SECTION — index.html
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .news-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px;
+  }
+  .news-card-img { aspect-ratio: 4 / 5; height: auto; font-size: 2.8rem; }
+  .news-title    { font-size: 0.95rem; }
+  .news-excerpt  { font-size: 0.79rem; }
+  .news-body     { padding: 16px 18px 18px; }
+}
+
+/* ─────────────────────────────────────────────
+   AMBIANCE — index.html
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .ambiance-grid {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-rows: auto !important;
+    gap: 10px;
+  }
+  .amb-item.big { grid-column: span 2; grid-row: span 1; height: 190px; }
+  .amb-item.mid { height: 140px; }
+  .amb-label { font-size: 0.64rem; padding: 3px 9px; bottom: 8px; left: 8px; }
+}
+@media (max-width: 480px) {
+  .ambiance-grid { grid-template-columns: 1fr !important; }
+  .amb-item.big  { grid-column: span 1; height: 200px; }
+  .amb-item.mid  { height: 160px; }
+}
+
+/* ─────────────────────────────────────────────
+   ABOUT SNIPPET — index.html
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .about-snip-inner {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+  }
+  .about-pillars {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-top: 1.4rem;
+  }
+  .about-pillar { padding: 12px 14px; }
+  .about-pillar-label { font-size: 0.62rem; }
+  .about-pillar-val   { font-size: 0.95rem; }
+  .about-visual-cards {
+    grid-template-columns: 1fr 1fr;
+    max-width: 420px; margin: 0 auto;
+  }
+  .avc-col-right { padding-top: 24px; }
+}
+@media (max-width: 480px) {
+  .about-pillars { grid-template-columns: 1fr; }
+}
+
+/* ─────────────────────────────────────────────
+   LOCATION — index.html
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .location-inner {
+    grid-template-columns: 1fr !important;
+    gap: 24px;
+  }
+  .location-map { height: 240px; }
+  .loc-block    { padding: 16px 18px; margin-bottom: 10px; }
+  .loc-val      { font-size: 0.86rem; }
+  .hour-row     { font-size: 0.78rem; padding: 5px 0; }
+}
+
+/* ─────────────────────────────────────────────
+   FOOTER — all pages
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 767px) {
+  footer { padding: 48px 6% 24px; }
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px 20px;
+    margin-bottom: 32px;
+  }
+  /* Brand col spans full width */
+  .footer-top > *:first-child {
+    grid-column: 1 / -1;
+  }
+  .footer-desc { max-width: 100%; font-size: 0.82rem; }
+  .footer-socials { justify-content: flex-start; gap: 10px; margin-top: 14px; }
+  .social-btn { width: 34px; height: 34px; font-size: 0.85rem; }
+  .footer-col-title { margin-bottom: 0.7rem; }
+  .footer-links li { margin-bottom: 6px; }
+  .footer-links a  { font-size: 0.84rem; }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px; padding-top: 18px;
+    font-size: 0.72rem;
+  }
+  .footer-tagline { font-size: 0.82rem; }
+}
+@media (max-width: 480px) {
+  .footer-top { grid-template-columns: 1fr; gap: 24px; }
+  .footer-top > *:first-child { grid-column: auto; }
+  .footer-socials { justify-content: flex-start; }
+}
+
+/* ─────────────────────────────────────────────
+   MENU PAGE — menu.html
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .page-hero   { padding: 100px 6% 56px; }
+  .menu-grid-3 { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .menu-tab    { font-size: 0.78rem; padding: 7px 16px; }
+  .menu-tabs   { gap: 8px; }
+}
+@media (max-width: 767px) {
+  .page-hero       { padding: 84px 6% 44px; }
+  .page-hero-title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+  .page-hero-sub   { font-size: 0.86rem; }
+
+  /* Tab filters — horizontal scroll */
+  .menu-tabs {
+    position: static !important;
+    display: flex !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 8px;
+    padding: 0 6% 10px !important;
+    margin: 0 -6% !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  .menu-tabs::-webkit-scrollbar { display: none; }
+  .menu-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-size: 0.77rem;
+    padding: 7px 14px !important;
+  }
+
+  /* Menu grid → horizontal carousel per section */
+  .menu-grid-3 {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    gap: 14px;
+    margin-left: -6% !important; margin-right: -6% !important;
+    padding-left: 6% !important; padding-right: 6% !important;
+    padding-bottom: 12px;
+    grid-template-columns: unset !important;
+  }
+  .menu-grid-3::-webkit-scrollbar { display: none; }
+  .menu-grid-3 > * {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    width: 195px !important;
+    min-width: 195px;
+  }
+  .menu-section       { margin-bottom: 44px; }
+  .menu-section-title { font-size: 1.15rem; margin-bottom: 14px; }
+  .menu-section-sub   { font-size: 0.8rem; }
+}
+@media (max-width: 480px) {
+  .menu-grid-3 > * { width: 170px !important; min-width: 170px; }
+}
+
+/* ─────────────────────────────────────────────
+   ABOUT PAGE — about.html
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .about-hero       { padding-bottom: 64px; }
+  .about-hero-inner { padding-top: 110px; gap: 36px; }
+  .about-hero-title { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+  .about-story-inner{ gap: 48px; }
+  .story-card-big   { height: 340px; }
+}
+@media (max-width: 767px) {
+  .about-hero { padding: 0 6% 52px; }
+  .about-hero-inner {
+    grid-template-columns: 1fr !important;
+    padding-top: 96px; gap: 0;
+  }
+  .about-hero-right { display: none !important; }
+  .about-hero-title { font-size: clamp(1.8rem, 7vw, 2.6rem); line-height: 1.1; }
+  .about-hero-body  { font-size: 0.88rem; max-width: 100%; margin-bottom: 1.4rem; }
+
+  /* Story */
+  .about-story       { padding: 56px 6%; }
+  .about-story-inner { grid-template-columns: 1fr !important; gap: 28px; }
+  .story-card-big    { height: 230px; }
+  .story-float       { display: none; }
+
+  /* Mission */
+  .about-mission  { padding: 56px 6%; }
+  .mission-grid   { grid-template-columns: 1fr !important; gap: 14px; }
+  .mission-card   { padding: 20px; }
+
+  /* Products — horizontal carousel */
+  .about-products  { padding: 56px 6%; }
+  .products-grid {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 14px;
+    margin-left: -6%; margin-right: -6%;
+    padding-left: 6%; padding-right: 6%;
+    padding-bottom: 10px;
+  }
+  .products-grid::-webkit-scrollbar { display: none; }
+  .products-grid .product-card {
+    width: 170px !important;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Team */
+  .about-team { padding: 56px 6%; }
+  .team-grid {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    gap: 14px;
+    margin-left: -6%; margin-right: -6%;
+    padding-left: 6%; padding-right: 6%;
+    padding-bottom: 10px;
+  }
+  .team-grid::-webkit-scrollbar { display: none; }
+  .team-grid .team-card {
+    width: 160px !important;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* Timeline */
+  .about-timeline { padding: 56px 6%; }
+  .timeline { padding-left: 20px; }
+  .timeline-year  { font-size: 0.75rem; }
+  .timeline-event { font-size: 0.9rem; }
+  .timeline-desc  { font-size: 0.82rem; }
+
+  /* CTA */
+  .about-cta { padding: 56px 6%; }
+  .about-cta-title { font-size: clamp(1.5rem, 6vw, 2.2rem); }
+  .about-cta-btns  { flex-direction: column; align-items: center; gap: 10px; }
+}
+@media (max-width: 480px) {
+  .about-hero-title { font-size: clamp(1.6rem, 8vw, 2rem); }
+  .team-grid .team-card { width: 150px !important; }
+  .products-grid .product-card { width: 155px !important; }
+}
+
+/* ─────────────────────────────────────────────
+   CONTACT PAGE — contact.html
+───────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .contact-hero       { padding: 100px 6% 56px; }
+  .contact-main-inner { gap: 44px; }
+  .channels-grid      { gap: 24px; }
+}
+@media (max-width: 767px) {
+  .contact-hero       { padding: 84px 6% 44px; }
+  .contact-hero-title { font-size: clamp(1.7rem, 7vw, 2.4rem); }
+  .contact-hero-sub   { font-size: 0.86rem; }
+
+  /* Channels — horizontal carousel */
+  .contact-channels { padding: 52px 6%; }
+  .channels-grid {
+    display: flex !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap !important;
+    gap: 20px;
+    margin-left: 0; margin-right: 0;
+    padding-left: 8%; padding-right: 10%;
+    padding-bottom: 12px;
+    grid-template-columns: unset !important;
+  }
+  .channels-grid::-webkit-scrollbar { display: none; }
+  .channels-grid .channel-card {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    width: 220px !important;
+    min-width: 220px;
+    padding: 20px 18px;
+  }
+  .channel-title { font-size: 0.95rem; }
+  .channel-desc  { font-size: 0.78rem; }
+
+  /* Main form area */
+  .contact-main       { padding: 52px 6%; }
+  .contact-main-inner { grid-template-columns: 1fr !important; gap: 32px; }
+  .contact-form-card  { padding: 24px 20px; }
+  .form-row           { grid-template-columns: 1fr !important; gap: 12px; }
+  .form-topic-grid    { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+  .form-topic-btn     { font-size: 0.75rem; padding: 8px 10px; }
+
+  /* Reservation options */
+
+  /* Info side */
+  .contact-info-title { font-size: 1.7rem; }
+}
+@media (max-width: 480px) {
+  .contact-hero-title { font-size: clamp(1.5rem, 8vw, 1.9rem); }
+  .channels-grid .channel-card { width: 190px !important; min-width: 190px; }
+  .form-topic-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ─────────────────────────────────────────────
+   WAVE DIVIDERS — prevent clipping
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .wave-down { overflow: hidden; }
+  .wave-down svg { min-width: 100%; height: auto; }
+}
+
+/* ─────────────────────────────────────────────
+   TOUCH: Remove hover transforms (prevents sticky hover)
+───────────────────────────────────────────── */
+@media (hover: none) {
+  .menu-card:hover,
+  .news-card:hover,
+  .product-card:hover,
+  .team-card:hover { transform: none; box-shadow: none; }
+  .menu-card:hover::after,
+  .menu-card:hover::before { transform: scaleX(0); }
+  .btn-primary:hover,
+  .btn-outline:hover,
+  .btn-accent:hover { transform: none; }
+}
+
+/* ─────────────────────────────────────────────
+   HERO CARD — tablet: keep but smaller
+───────────────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 860px) {
+  .hero-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .hero-visual { display: flex; }
+  .hero-card-stack  { width: 230px; height: 280px; }
+  .hero-card-main   { width: 210px; height: 260px; }
+  .hero-card-shadow { width: 210px; height: 260px; }
+  .hero-card-top    { height: 160px; }
+  .float-badge      { display: none; }
+}
+
+/* ============================================================
+   MOBILE REVISION FIXES — camel_rev_mobile
+   All rules scoped to ≤767px (mobile only).
+   Zero desktop changes.
+   ============================================================ */
+
+/* ─────────────────────────────────────────────
+   FOOTER — hapus kolom Hubungi, Explore, Menu
+   (semua halaman) — keep only brand col + bottom
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Hide Menu, Explore, Hubungi footer columns */
+  .footer-top > div:not(:first-child) {
+    display: none !important;
+  }
+  /* Brand col takes full width */
+  .footer-top {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+  .footer-top > *:first-child {
+    grid-column: auto !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   HOME — hapus gambar kecil di hero card top
+   (.hero-card-top img / the small logo image)
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .hero-card-top img {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   HOME — ambiance grid → single-column carousel
+   Screenshots: "hanya 1 gambar saja ditampilkan,
+   buat jadi carousel sisanya"
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #ambiance { overflow: hidden; }
+  .ambiance-grid {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex-wrap: nowrap !important;
+    gap: 12px !important;
+    grid-template-columns: unset !important;
+    grid-template-rows: unset !important;
+    margin-left: -6%; margin-right: -6%;
+    padding-left: 6%; padding-right: 6%;
+    padding-bottom: 26px;
+    margin-bottom: -18px;
+    scroll-padding-left: 6%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-anchor: none;
+  }
+  .ambiance-grid::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .ambiance-grid > * {
+    scroll-snap-align: start !important;
+    flex-shrink: 0 !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+    width: 78vw !important;
+    max-width: 300px !important;
+    height: 200px !important;
+  }
+  .ambiance-grid::after {
+    content: '';
+    flex-shrink: 0;
+    width: 1px;
+  }
+}
+@media (max-width: 480px) {
+  .ambiance-grid > * {
+    width: 82vw !important;
+    height: 180px !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   HOME — about-visual-cards HORIZONTAL carousel
+─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .about-visual-cards {
+    display: flex !important;
+    grid-template-columns: unset !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 14px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    scrollbar-width: none !important;
+  }
+  .about-visual-cards::-webkit-scrollbar { display: none !important; }
+  .about-visual-cards .avc-col { display: contents !important; }
+  .about-visual-cards .av-card {
+    flex: 0 0 84% !important;
+    width: 84% !important;
+    min-width: 84% !important;
+    max-width: 84% !important;
+    height: 240px !important;
+    border-radius: var(--radius-lg) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    padding: 16px !important;
+    scroll-snap-align: center !important;
+    scroll-snap-stop: always !important;
+  }
+  .avc-col-right { padding-top: 0 !important; }
+}
+
+/* ─────────────────────────────────────────────
+   HOME — testimonials: 1 card per slide on mobile
+   "hanya 1 card saja dengan 9 part carousel"
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .testi-slide {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: unset !important;
+    gap: 0 !important;
+    min-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  /* Only show first card in each slide on mobile;
+     JS already paginates 3-per-slide, so override
+     to show slides 1-card-wide via CSS */
+  .testi-track {
+    /* JS sets translateX per slide — keep that, just
+       make each testi-slide show 1 card */
+  }
+  .testi-card {
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  /* Show only the first card per slide on mobile */
+  .testi-slide .testi-card:not(:first-child) {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   STORY (about.html) — story section fix
+   "perbaiki tampilan" / "perhatiikan margin"
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .about-story {
+    padding: 52px 6% !important;
+    overflow: hidden !important;
+  }
+  .about-story-inner {
+    gap: 24px !important;
+  }
+  .story-visual {
+    width: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+  }
+  .story-card-big {
+    width: 100% !important;
+    height: 220px !important;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+  }
+  .story-text {
+    padding: 0 !important;
+  }
+  .story-body {
+    font-size: 0.88rem !important;
+    line-height: 1.7 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   STORY — products grid: 1 card carousel
+   "hanya 1 card saja, sisanya dibuat jadi carousel"
+───────────────────────────────────────────── */
+/* Already handled above by .products-grid carousel
+   in existing mobile.css — ensuring visible width */
+@media (max-width: 767px) {
+  .products-grid .product-card {
+    width: 72vw !important;
+    max-width: 240px !important;
+    min-width: unset !important;
+    flex-shrink: 0 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   KONTAK — review card margin fix
+   "perbaiki margin card isi review"
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .contact-reviews {
+    padding: 52px 6% !important;
+    overflow: hidden !important;
+  }
+  .review-form-card {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 20px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .reviews-carousel-wrap {
+    margin-left: -6% !important;
+    margin-right: -6% !important;
+    overflow: hidden !important;
+  }
+  .reviews-list {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* event scroll-snap removed — using .event-track carousel */
+  .event-photo-grid::-webkit-scrollbar { display: none; }
+  .event-photo-grid::after { content: ''; flex-shrink: 0; width: 1px; }
+  .event-photo-item {
+    flex-shrink: 0 !important;
+    scroll-snap-align: start !important;
+    width: 68vw !important;
+    max-width: 220px !important;
+  }
+  .event-photo-img {
+    height: 140px !important;
+  }
+
+/* ─────────────────────────────────────────────
+   KONTAK — margin fix (section spacing)
+   "perbaiki margin"
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .reservation-banner {
+    padding: 52px 6% !important;
+  }
+  .res-inner {
+    padding: 0 !important;
+  }
+  .contact-faq {
+    padding: 52px 6% !important;
+  }
+  .contact-main {
+    padding: 44px 6% !important;
+  }
+  .contact-channels {
+    padding: 44px 6% !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   MENU — margin fix: terlalu mentok layar
+───────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .menu-page-inner {
+    padding: 0 6% !important;
+  }
+  .menu-page {
+    padding-top: 24px !important;
+    padding-bottom: 48px !important;
+  }
+  /* Tabs horizontal scroll with proper padding */
+  .menu-tabs {
+    margin-left: -6% !important;
+    margin-right: -6% !important;
+    padding-left: 6% !important;
+    padding-right: 6% !important;
+  }
+  /* Carousel bleeds edge-to-edge but keeps inner padding */
+  .menu-section {
+    padding: 0 !important;
+  }
+  .menu-section-title,
+  .menu-section-sub {
+    padding: 0 !important;
+  }
+}
+
+
+/* ============================================================
+   MARGIN KIRI FIXES — camel_rev_mobile revision
+   All rules scoped to ≤767px mobile only.
+   ============================================================ */
+
+/* ─────────────────────────────────────────────
+   HOME — tambah margin kiri: #popular, #about-snip, #news, #location
+   Use padding shorthand to beat specificity of earlier 5% rules
+─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  #popular      { padding: 56px 6% !important; }
+  #about-snip   { padding: 56px 6% !important; }
+  #news         { padding: 56px 6% !important; }
+  #location     { padding: 56px 6% !important; }
+  #ambiance     { padding: 56px 6% !important; }
+
+  /* Carousels bleed edge-to-edge — compensate */
+  .menu-preview-grid {
+    margin-left: -6% !important;
+    margin-right: -6% !important;
+    padding-left: 6% !important;
+    padding-right: 6% !important;
+  }
+  .ambiance-grid {
+    margin-left: -8% !important;
+    margin-right: -8% !important;
+    padding-left: 8% !important;
+    padding-right: 8% !important;
+    scroll-padding-left: 8% !important;
+  }
+  .news-grid {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   STORY (about.html) — tambah margin kiri
+   Shorthand beats earlier 5% specificity
+─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .about-story    { padding: 52px 6% !important; }
+  .about-mission  { padding: 56px 6% !important; }
+  .about-timeline { padding: 56px 6% !important; }
+  .about-cta      { padding: 56px 6% !important; }
+  .about-products { padding: 56px 6% !important; }
+  .about-team     { padding: 52px 0 !important; }
+  .about-team .section-header { padding-left: 6% !important; padding-right: 6% !important; }
+
+  /* Carousels compensate */
+  .products-grid {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding-left: 6% !important;
+    padding-right: 6% !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   STORY — story-card-big → TIMED CENTERED CAROUSEL
+   "buat jadi carousel" — same pattern as testi
+─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  /* Wrapper */
+  .story-visual {
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+  .story-carousel-track {
+    display: flex !important;
+    transition: transform 0.4s ease !important;
+    will-change: transform;
+  }
+  .story-carousel-track .story-card-big {
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  /* Controls */
+  .story-carousel-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+  .story-car-btn {
+    background: rgba(26,58,92,0.12) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 32px !important; height: 32px !important;
+    display: flex !important; align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 0.95rem !important;
+    color: var(--navy) !important;
+    flex-shrink: 0 !important;
+  }
+  .story-car-dots {
+    display: flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  .story-car-dot {
+    width: 7px !important; height: 7px !important;
+    border-radius: 50% !important;
+    background: rgba(26,58,92,0.25) !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.2s !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .story-car-dot.active {
+    background: var(--navy) !important;
+    transform: scale(1.3) !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   KONTAK — tambah margin kiri
+   Shorthand beats earlier 5% specificity
+─────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .contact-hero        { padding: 84px 6% 44px !important; }
+  .contact-channels    { padding: 44px 6% !important; }
+  .contact-main        { padding: 44px 6% !important; }
+  .contact-reviews     { padding: 52px 6% 60px !important; }
+  .contact-faq         { padding: 52px 6% !important; }
+  .reservation-banner  { padding: 52px 6% !important; }
+
+  /* Channel carousel compensate — handled by earlier .channels-grid rule */
+  /* Reviews carousel compensate */
+  .reviews-carousel-wrap {
+    margin-left: -6% !important;
+    margin-right: -6% !important;
+  }
+  .review-form-card {
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 20px 16px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* ─── STORY HERO — hide bg circles on mobile, fix min-height ─── */
+@media (max-width: 767px) {
+  .about-hero-bg-circle { display: none !important; }
+  .about-hero { min-height: auto !important; overflow: hidden !important; padding: 96px 6% 52px !important; }
+  .about-hero-inner { padding-top: 0 !important; }
+}
+
+/* ─── NEWS CAROUSEL (mobile) ─── */
+@media (max-width: 767px) {
+  .news-grid#newsGrid {
+    display: flex !important;
+    grid-template-columns: unset !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 16px !important;
+    padding-bottom: 4px !important;
+    scrollbar-width: none !important;
+  }
+  .news-grid#newsGrid::-webkit-scrollbar { display: none !important; }
+  .news-grid#newsGrid .news-card {
+    flex: 0 0 88% !important;
+    scroll-snap-align: center !important;
+    scroll-snap-stop: always !important;
+  }
+}
+
+
+/* ── EVENT PHOTO CAROUSEL (mobile) ── */
+@media (max-width: 767px) {
+  #eventPhotoGrid {
+    display: block !important;
+    overflow: hidden !important;
+    width: 100% !important;
+    grid-template-columns: unset !important;
+  }
+  .event-track {
+    display: flex !important;
+    flex-direction: row !important;
+    transition: transform 0.4s ease !important;
+    will-change: transform;
+  }
+  .event-track .event-photo-item {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box !important;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    position: relative !important;
+  }
+  .event-track .event-photo-img {
+    width: 100% !important;
+    height: 240px !important;
+    border-radius: var(--radius-lg) !important;
+    overflow: hidden !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+  .event-track .event-photo-label {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  /* kill hover scale on mobile */
+  .event-track .event-photo-item:hover .event-photo-img {
+    transform: none !important;
+  }
+  .event-car-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+    margin-bottom: 28px !important;
+  }
+  .event-car-btn {
+    background: rgba(255,255,255,0.15) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 32px !important; height: 32px !important;
+    display: flex !important; align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 0.95rem !important;
+    color: #fff !important;
+    flex-shrink: 0 !important;
+  }
+  .event-car-dots {
+    display: flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  .event-car-dot {
+    width: 7px !important; height: 7px !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,0.3) !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.2s !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .event-car-dot.active {
+    background: #fff !important;
+    transform: scale(1.3) !important;
+  }
+}
+
+/* ── TEAM CAROUSEL — locked center, true circle, CSS-native (no JS required) ── */
+@media (max-width: 900px) {
+  .team-reveal-card .trc-photo { opacity: 1 !important; }
+  .team-reveal-card .trc-inner::after { opacity: 0 !important; }
+  .team-reveal-card .trc-overlay { opacity: 1 !important; }
+  .team-reveal-card:hover { box-shadow: 0 0 0 3px rgba(212,163,89,0.25) !important; transform: none !important; }
+  .team-reveal-card:hover .trc-photo { opacity: 1 !important; }
+  .team-reveal-card:hover .trc-inner::after { opacity: 0 !important; }
+  .team-reveal-card:hover .trc-overlay { opacity: 1 !important; }
+
+  #teamGrid.team-reveal-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scroll-behavior: smooth !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  #teamGrid.team-reveal-grid::-webkit-scrollbar { display: none !important; }
+  #teamGrid.team-reveal-grid > .team-reveal-card {
+    flex: 0 0 100% !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: unset !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    scroll-snap-align: center !important;
+    scroll-snap-stop: always !important;
+    overflow: visible !important;
+  }
+  #teamGrid.team-reveal-grid > .team-reveal-card .trc-inner {
+    width: 200px !important;
+    height: 200px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+    aspect-ratio: 1 / 1 !important;
+  }
+  #teamGrid.team-reveal-grid > .team-reveal-card .trc-photo,
+  #teamGrid.team-reveal-grid > .team-reveal-card .trc-photo img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+  }
+
+  .team-car-controls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin-top: 14px !important;
+  }
+  .team-car-btn {
+    background: rgba(255,255,255,0.15) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    font-size: 0.95rem !important;
+    color: #fff !important;
+  }
+  .team-car-dots {
+    display: flex !important;
+    gap: 6px !important;
+    align-items: center !important;
+  }
+  .team-car-dot {
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 50% !important;
+    background: rgba(255,255,255,0.3) !important;
+    border: none !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    transition: background 0.2s, transform 0.2s !important;
+  }
+  .team-car-dot.active {
+    background: #fff !important;
+    transform: scale(1.3) !important;
+  }
+}

@@ -1,0 +1,365 @@
+/* ── ABOUT PAGE ── */
+
+/* Hero full-bleed */
+.about-hero {
+  background: var(--navy);
+  min-height: 85vh;
+  display: flex; align-items: flex-end;
+  padding: 0 5% 80px;
+  position: relative; overflow: hidden;
+}
+.about-hero-bg-circle {
+  position: absolute; border-radius: 50%; pointer-events: none;
+}
+.about-hero-bg-circle.c1 {
+  width: 700px; height: 700px;
+  background: rgba(74,144,196,0.12);
+  top: -200px; right: -150px;
+}
+.about-hero-bg-circle.c2 {
+  width: 350px; height: 350px;
+  background: rgba(201,169,110,0.08);
+  bottom: 0; left: 8%;
+}
+.about-hero-inner {
+  max-width: 1160px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 0;
+  gap: 0; align-items: end; padding-top: 140px;
+}
+.about-hero-tag { color: var(--accent); margin-bottom: 1.2rem; }
+.about-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 700; color: var(--white);
+  line-height: 1.08; margin-bottom: 1.4rem;
+}
+.about-hero-title em { font-style: italic; color: var(--accent); }
+.about-hero-body {
+  font-size: 1.05rem; color: rgba(255,255,255,0.65);
+  line-height: 1.75; max-width: 440px; margin-bottom: 2rem;
+}
+.about-hero-right {
+  display: flex; flex-direction: column; gap: 16px; align-items: flex-end;
+}
+
+/* ── STORY ── */
+.about-story { background: var(--cream); padding: 100px 5%; }
+.about-story-inner {
+  max-width: 1160px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.story-visual { position: relative; }
+.story-card-big {
+  background: var(--navy); border-radius: var(--radius-xl);
+  height: 420px; display: flex; align-items: center;
+  justify-content: center; position: relative; overflow: hidden;
+}
+.story-card-big::before {
+  content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%;
+  background: rgba(74,144,196,0.15); top: -80px; right: -80px;
+}
+.story-card-big::after {
+  content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%;
+  background: rgba(201,169,110,0.1); bottom: -50px; left: -50px;
+}
+.story-float {
+  position: absolute; background: var(--white);
+  border-radius: var(--radius-md); padding: 14px 18px;
+  box-shadow: 0 8px 28px rgba(13,31,53,0.14);
+  display: flex; align-items: center; gap: 10px;
+}
+.story-float.sf1 { bottom: -16px; left: -20px; }
+.story-float.sf2 { top: 30px; right: -20px; }
+.sf-name { font-size: 0.78rem; font-weight: 700; color: var(--navy); }
+.sf-sub { font-size: 0.68rem; color: var(--text-muted); }
+
+.story-text .section-tag { display: block; }
+.story-text .section-title { margin-bottom: 1.2rem; }
+.story-body {
+  font-size: 1rem; color: var(--text-mid);
+  line-height: 1.8; margin-bottom: 1.6rem;
+}
+.story-quote {
+  border-left: 3px solid var(--accent);
+  padding-left: 20px; margin: 1.8rem 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem; font-style: italic;
+  color: var(--navy); line-height: 1.6;
+}
+
+/* ── MISSION ── */
+.about-mission {
+  background: var(--navy-mid); padding: 90px 5%;
+}
+.mission-inner { max-width: 1160px; margin: 0 auto; }
+.mission-header { text-align: center; margin-bottom: 3.5rem; }
+.mission-header .section-tag { color: var(--accent); }
+.mission-header .section-title { color: var(--white); }
+.mission-header .section-sub { color: rgba(255,255,255,0.55); }
+
+.mission-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px;
+}
+.mission-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-top: 3px solid var(--accent);
+  border-radius: 0; padding: 32px 28px;
+  font-family: var(--font-card);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.mission-card:hover {
+  border-color: var(--accent); transform: translateY(-4px);
+}
+.mission-icon {
+  font-size: 2.4rem; margin-bottom: 16px; display: block;
+}
+.mission-title {
+  font-family: var(--font-card);
+  font-size: 1.2rem; font-weight: 700; color: var(--white);
+  margin-bottom: 10px;
+}
+.mission-body { font-family: var(--font-card); font-size: 0.88rem; color: rgba(255,255,255,0.6); line-height: 1.65; }
+
+/* ── PRODUCTS ── */
+.about-products { background: var(--cream-dark); padding: 90px 5%; }
+.products-inner { max-width: 1160px; margin: 0 auto; }
+.products-inner .section-header { margin-bottom: 3rem; }
+
+.products-grid {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 50px;
+}
+.products-grid .product-card { width: 230px; flex-shrink: 0; }
+.product-card {
+  background: var(--white); border-radius: 0;
+  overflow: visible; border: 1px solid rgba(26,58,92,0.12);
+  border-top: 3px solid var(--accent);
+  padding: 12px;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.product-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 10px 0 0 rgba(15,30,54,0.06); }
+.product-card-img {
+  height: 130px; display: flex; align-items: center;
+  justify-content: center; font-size: 2.8rem;
+  border-radius: var(--radius-lg);
+}
+.product-card-img.nv { background: var(--navy-pale); }
+.product-card-img.sd { background: var(--sand); }
+.product-card-img.sg { background: #E8F0EB; }
+.product-card-img.lt { background: #F0E2D2; }
+.product-card-body { padding: 16px 4px 4px; }
+.product-cat {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.product-name {
+  font-family: var(--font-card); font-size: 0.95rem;
+  font-weight: 700; color: var(--navy); margin-bottom: 4px;
+}
+.product-desc { font-family: var(--font-card); font-size: 0.76rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ── TIMELINE ── */
+.about-timeline { background: var(--cream); padding: 90px 5%; }
+.timeline-inner { max-width: 800px; margin: 0 auto; }
+.timeline-inner .section-header { margin-bottom: 3.5rem; }
+
+.timeline { position: relative; padding-left: 32px; }
+.timeline::before {
+  content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+  width: 2px; background: var(--navy-pale);
+}
+.timeline-item { position: relative; margin-bottom: 40px; }
+.timeline-item::before {
+  content: ''; position: absolute;
+  left: -28px; top: 6px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--accent); border: 3px solid var(--white);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.timeline-year {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+}
+.timeline-event {
+  font-family: var(--font-display);
+  font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.timeline-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ── TEAM ── */
+.about-team { background: var(--navy); padding: 90px 5%; }
+.about-team .section-tag { color: var(--accent); }
+.about-team .section-title { color: var(--white); }
+.about-team .section-sub { color: rgba(255,255,255,0.55); }
+.team-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 50px; max-width: 1160px; margin: 0 auto;
+}
+.team-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-top: 3px solid var(--accent);
+  border-radius: 0; overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  text-align: center;
+  font-family: var(--font-card);
+}
+.team-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+.team-name { font-weight: 700; color: var(--white); font-size: 0.95rem; margin-bottom: 4px; }
+.team-role { font-size: 0.76rem; color: rgba(255,255,255,0.5); }
+
+/* ── CTA ── */
+.about-cta {
+  background: var(--accent);
+  padding: 80px 5%; text-align: center;
+  position: relative; overflow: hidden;
+}
+.about-cta::before {
+  content: ''; position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); top: -150px; left: -100px;
+}
+.about-cta::after {
+  content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); bottom: -100px; right: -80px;
+}
+.about-cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+  color: var(--white); margin-bottom: 1rem; position: relative; z-index: 1;
+}
+.about-cta-sub {
+  font-size: 1rem; color: rgba(255,255,255,0.8);
+  margin-bottom: 2rem; position: relative; z-index: 1;
+}
+.about-cta-btns {
+  display: flex; gap: 14px; justify-content: center;
+  flex-wrap: wrap; position: relative; z-index: 1;
+}
+
+/* responsive → mobile.css */
+
+/* ── HERO CUP (replaces stat boxes) ── */
+.hero-cup-wrap { position: relative; display: flex; align-items: center; justify-content: center; min-height: 320px; }
+
+/* ── STORY PHOTO ── */
+.story-photo-card { overflow: hidden; background: var(--navy-pale); }
+.story-photo-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+
+/* ── TEAM REVEAL ANIMATION (member reveal style) ── */
+.team-reveal-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; padding: 0 20px; }
+.team-reveal-card { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; cursor: pointer; position: relative; flex-shrink: 0; }
+
+.trc-inner {
+  width: 100%; height: 100%; position: relative; border-radius: 50%; overflow: hidden;
+}
+
+/* Photo — hidden by default, reveals on hover */
+.trc-photo {
+  position: absolute; inset: 0; z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.trc-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.team-reveal-card:hover .trc-photo { opacity: 1; }
+
+/* Dark base layer — always visible, fades on hover */
+.trc-inner::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: 50%; z-index: 2;
+  background: #0a1628;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.team-reveal-card:hover .trc-inner::after { opacity: 0; }
+
+/* Gold ring — accent on hover */
+.team-reveal-card {
+  box-shadow: 0 0 0 3px rgba(212,163,89,0.25);
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+}
+.team-reveal-card:hover {
+  box-shadow: 0 0 0 3px var(--accent);
+  transform: scale(1.04);
+}
+
+/* Name/role at z-index 3 — above dark layer, fade on hover */
+.trc-overlay {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.trc-name {
+  font-family: var(--font-ui); font-weight: 700; font-size: 1.05rem;
+  color: white; text-align: center; letter-spacing: 0.05em;
+}
+.trc-role {
+  font-size: 0.72rem; color: var(--accent); text-align: center;
+  margin-top: 5px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+/* On hover: name/role fade out */
+.team-reveal-card:hover .trc-overlay { opacity: 0; }
+
+/* ── COFFEE LOADER (shared style, same as index) ── */
+.coffee-loader-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; }
+.no-data-msg { padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.9rem; }
+.loader { width: 100px; height: 80px; position: relative; display: flex; align-items: center; }
+.loader .cup { position: absolute; width: 25px; height: 18px; background-color: var(--navy); border: 1px solid var(--navy-dark); z-index: 1; border-radius: 2px 2px 10px 10px; animation: cupExpansion 6s infinite ease-in-out; transform-origin: center; }
+.cup::after { content: ""; position: absolute; top: -2px; width: calc(100% - 2px); height: 2px; background: #fed59fca; border: 1px solid var(--navy-dark); border-radius: 50%; }
+.cup::before { content: ""; position: absolute; top: 15px; width: calc(100% - 2px); height: 4px; background: transparent; border: 1px solid var(--navy-dark); border-top: none; border-radius: 50%; z-index: -1; }
+.loader .cup .cup-handle { position: absolute; width: 5px; height: 10px; background-color: var(--navy); border: 1px solid var(--navy-dark); right: -5px; top: 2px; border-radius: 2px 10px 20px 2px; }
+.loader .cup .smoke { position: absolute; bottom: 100%; left: 50%; width: 15px; height: 25px; background: rgba(46,95,138,0.4); border-radius: 50%; transform: translateX(-50%); animation: smokeRise 6s infinite ease-in-out; filter: blur(8px); }
+.loader .cup .smoke.one { animation-delay: 0s; }
+.loader .cup .smoke.two { animation-delay: 1s; }
+.loader .cup .smoke.three { animation-delay: 2s; }
+.loader .load { position: absolute; font-size: 10px; opacity: 0.5; top: 45%; left: 50%; transform: translateX(-50%); z-index: -1; color: var(--text-muted); }
+@keyframes cupExpansion {
+  0%{width:25px;transform:translateX(0);} 40%{width:100%;transform:translateX(0);}
+  80%{width:25px;transform:translateX(64px);} 90%{width:100%;transform:translateX(0);}
+  100%{width:25px;transform:translateX(0);}
+}
+@keyframes smokeRise {
+  0%{transform:translate(-50%,0) scale(0.4);opacity:0;} 30%{opacity:0.7;} 60%{opacity:0.4;}
+  100%{transform:translate(-50%,-120px) scale(1);opacity:0;}
+}
+
+@media (max-width: 600px) {
+  .team-reveal-card { width: 160px; height: 160px; }
+}
+/* keep text above camel */
+.about-hero-inner { position: relative; z-index: 1; }
+
+/* ── MOBILE FIXES — appended, beats all above ── */
+@media (max-width: 767px) {
+  /* Hero: hide decorative elements, fix height & padding */
+  .about-hero-bg-circle { display: none !important; }
+  .about-hero { 
+    min-height: auto !important;
+    padding: 96px 6% 52px !important;
+    overflow: hidden !important;
+  }
+  .about-hero-inner { padding-top: 0 !important; }
+
+  /* Section padding */
+  .about-story    { padding-left: 6% !important; padding-right: 6% !important; }
+  .about-mission  { padding-left: 6% !important; padding-right: 6% !important; }
+  .about-timeline { padding-left: 6% !important; padding-right: 6% !important; }
+  .about-cta      { padding-left: 6% !important; padding-right: 6% !important; }
+  .about-products { padding-left: 6% !important; padding-right: 6% !important; }
+  /* Team: 0 side padding so carousel bleeds edge-to-edge */
+  .about-team     { padding-left: 0 !important; padding-right: 0 !important; }
+  .about-team .section-header { padding-left: 6% !important; padding-right: 6% !important; }
+}
+
+/* ── MOBILE: disable team hover-reveal, handled by JS carousel ── */
+@media (max-width: 767px) {
+  .team-reveal-card .trc-photo { opacity: 1 !important; }
+  .team-reveal-card .trc-inner::after { opacity: 0 !important; }
+  .team-reveal-card .trc-overlay { opacity: 1 !important; }
+  .team-reveal-card:hover { transform: none !important; }
+  .team-reveal-card:hover .trc-overlay { opacity: 1 !important; }
+  .team-reveal-card:hover .trc-inner::after { opacity: 0 !important; }
+}
